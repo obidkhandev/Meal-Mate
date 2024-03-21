@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:meal_mate/screens/router/router.dart';
+
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
-import '../screens/splash/splash_screen.dart';
+import '../screens/router/router.dart';
+
+
+
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -15,13 +16,21 @@ class App extends StatelessWidget {
       designSize: const Size(375, 812),
       builder: (context, child) {
         ScreenUtil.init(context);
-        return const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: RouteName.splash,
-          onGenerateRoute: AppRoute.generateRoute,
+        return AdaptiveTheme(
+          light: AppTheme.lightTheme,
+          dark: AppTheme.darkTheme,
+          initial: AdaptiveThemeMode.light, builder: (light,dark) {
+            return  MaterialApp(
+              darkTheme: dark,
+              theme: light,
+              debugShowCheckedModeBanner: false,
+              initialRoute: RouteName.splash,
+              onGenerateRoute: AppRoute.generateRoute,
+            );
+        },
+
         );
       },
-
     );
   }
 }

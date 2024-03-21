@@ -38,18 +38,18 @@ class _TextFieldItemState extends State<TextFieldItem> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade400)
+        border: Border.all(color: Color(0xffE1E2E3),),
       ),
       child: TextFormField(
         controller: widget.controller,
         obscureText: widget.isPassword ? obscureText : false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
 
-        style: TextStyle(color: Colors.blueAccent),
+        style: Theme.of(context).textTheme.titleSmall,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 13),
           fillColor: Colors.white,
-          border: InputBorder.none,
+          border: OutlineInputBorder(),
           filled: true,
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.grey),
@@ -73,7 +73,7 @@ class _TextFieldItemState extends State<TextFieldItem> {
                     }
                     setState(() {});
                   },
-                  icon: Icon(eye),
+                  icon: Icon(eye,color: Theme.of(context).iconTheme.color,),
                 )
               : null,
         ),

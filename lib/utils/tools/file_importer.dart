@@ -14,3 +14,7 @@ export  '../../../utils/utility_functions.dart';
 export '../../../utils/constants/app_validates.dart';
 export 'package:meal_mate/screens/profile/profile_screen.dart';
 export 'package:meal_mate/screens/tab_box/tab_box.dart';
+export 'package:flutter_screenutil/flutter_screenutil.dart';
+export  '../colors/app_colors.dart';
+export 'package:adaptive_theme/adaptive_theme.dart';
+export 'package:meal_mate/utils/theme/app_theme.dart';

@@ -39,8 +39,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           SizedBox(height: 5),
           Text(
-            "Please enter your account details below!",
-            style: TextStyle(fontSize: 14),
+            "Everyone can be a chef",
+            style: Theme.of(context).textTheme.titleSmall
           ),
           TextFieldItem(
             hintText: "Full Name",
