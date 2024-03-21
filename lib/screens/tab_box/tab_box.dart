@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:meal_mate/screens/add_screen/add_screen.dart';
+import 'package:meal_mate/screens/community/community_screen.dart';
 import 'package:meal_mate/screens/search/search_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -26,7 +27,8 @@ class _TabBoxState extends State<TabBox> {
     return [
       HomePage(),
       SearchScreen(),
-      AddScreen(),
+      CommunityScreen(),
+      // AddScreen(),
       ProfileScreen(),
     ];
   }
@@ -42,19 +44,19 @@ class _TabBoxState extends State<TabBox> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.search),
-        title: ("Explore"),
+        icon: const Icon(CupertinoIcons.search),
+        title: ("Search"),
         activeColorPrimary: AppColors.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.add),
-        title: ("Add"),
+        icon: const Icon(CupertinoIcons.chat_bubble),
+        title: ("Community"),
         activeColorPrimary: AppColors.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.person),
+        icon: const Icon(CupertinoIcons.person),
         title: ("Profile"),
         activeColorPrimary: AppColors.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,

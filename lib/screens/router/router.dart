@@ -1,3 +1,5 @@
+import 'package:meal_mate/screens/add_screen/add_screen.dart';
+
 import '../../utils/tools/file_importer.dart';
 
 
@@ -16,6 +18,8 @@ class AppRoute {
         return navigate(const TabBox());
       case RouteName.profile:
         return navigate(const ProfileScreen());
+      case RouteName.addRecipe:
+        return navigate(const AddScreen());
 
       default:
         return navigate(

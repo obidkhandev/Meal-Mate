@@ -26,3 +26,5 @@ export 'package:flutter_svg/svg.dart';
 export 'package:meal_mate/screens/widget/on_tap.dart';
 export 'package:meal_mate/utils/images/images_path.dart';
 export 'package:animated_snack_bar/animated_snack_bar.dart';
+export 'package:meal_mate/data/model/food_model.dart';
+export 'package:meal_mate/utils/constants/app_constants.dart';
