@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:meal_mate/screens/register/register_screen.dart';
-import 'package:meal_mate/screens/singIn/sign_in_screen.dart';
-import 'package:meal_mate/screens/singIn/view_model/sing_in_and_register_view_model.dart';
-import 'package:provider/provider.dart';
+import '../../utils/tools/file_importer.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,25 +9,23 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  _init() async {
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
+    if (!mounted) return;
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      Navigator.pushReplacementNamed(context, RouteName.signIn);
+    } else {
+      Navigator.pushReplacementNamed(context, RouteName.tabBox);
+    }
+  }
+
   @override
   void initState() {
-    Future.microtask(() {
-      if (context.read<SingInViewModel>().checkCurrentUser()) {
-        return Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const SingInScreen()
-          ),
-        );
-      }else{
-        return Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const RegisterScreen(),
-          ),
-        );
-      }
-    });
+    _init();
     super.initState();
   }
 

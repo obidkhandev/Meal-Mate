@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:meal_mate/screens/home/home_page.dart';
-import 'package:meal_mate/screens/singIn/constants.dart';
-import 'package:meal_mate/screens/singIn/text_from_field.dart';
-import 'package:meal_mate/screens/singIn/view_model/sing_in_and_register_view_model.dart';
-import 'package:provider/provider.dart';
+import '../../utils/tools/file_importer.dart';
 
 class SingInScreen extends StatefulWidget {
   const SingInScreen({super.key});
@@ -28,7 +23,6 @@ class _SingInScreenState extends State<SingInScreen> {
           ),
           SizedBox(height: 50),
           TextFieldItem(
-            exp: AppValidates.emailExp,
             hintText: "Email address",
             controller: emailController,
             isPassword: false,
@@ -37,7 +31,6 @@ class _SingInScreenState extends State<SingInScreen> {
           ),
           SizedBox(height: 20),
           TextFieldItem(
-            exp: AppValidates.passwordExp,
             hintText: "Password",
             controller: passwordController,
             isPassword: true,
@@ -47,19 +40,18 @@ class _SingInScreenState extends State<SingInScreen> {
           SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
-              try {
-                context.read<SingInViewModel>().signInWithEmailAndPassword(
-                    emailController.text, passwordController.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => HomePage(),
-                  ),
-                );
-              } catch (error) {}
+              context.read<AuthViewModel>().loginUser(
+                context,
+                email: emailController.text,
+                password: passwordController.text,
+              );
             },
             child: Text("Sing In"),
+
           ),
+          ElevatedButton(onPressed: (){
+            Navigator.pushReplacementNamed(context,RouteName.register);
+          }, child: Text("Register"))
         ],
       ),
     );

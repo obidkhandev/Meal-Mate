@@ -1,0 +1,16 @@
+export 'package:flutter/material.dart';
+export 'package:meal_mate/screens/home/home_page.dart';
+export 'package:meal_mate/screens/auth/register_screen.dart';
+export 'package:meal_mate/screens/auth/sign_in_screen.dart';
+export 'package:meal_mate/screens/splash/splash_screen.dart';
+export 'package:meal_mate/utils/tools/route_names.dart';
+export 'package:meal_mate/screens/auth/text_from_field.dart';
+export 'package:meal_mate/screens/auth/view_model/auth_view_model.dart';
+export 'package:provider/provider.dart';
+export 'package:firebase_core/firebase_core.dart';
+export 'package:meal_mate/screens/tab_box/view_model/view_model.dart';
+export  'package:firebase_auth/firebase_auth.dart';
+export  '../../../utils/utility_functions.dart';
+export '../../../utils/constants/app_validates.dart';
+export 'package:meal_mate/screens/profile/profile_screen.dart';
+export 'package:meal_mate/screens/tab_box/tab_box.dart';

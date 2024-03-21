@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate/screens/register/register_screen.dart';
-import 'package:meal_mate/screens/singIn/view_model/sing_in_and_register_view_model.dart';
+import 'package:meal_mate/screens/auth/register_screen.dart';
+import 'package:meal_mate/screens/auth/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
           // title: Text("Lo"),
           leading: IconButton(
         onPressed: () {
-          context.read<SingInViewModel>().logOut();
+          context.read<AuthViewModel>().logout(context);
           Navigator.push(
             context,
             MaterialPageRoute(
