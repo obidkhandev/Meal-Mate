@@ -2,7 +2,7 @@ import 'package:meal_mate/utils/tools/file_importer.dart';
 
 myAnimatedSnackBar(BuildContext context,String message){
   return AnimatedSnackBar(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
       builder: (context){
     return Container(
       padding: EdgeInsets.all(8.sp),
@@ -11,7 +11,8 @@ myAnimatedSnackBar(BuildContext context,String message){
         borderRadius: BorderRadius.circular(10),
         border: Border.all(width: 1, color: AppColors.primary),
       ),
-      width: width(context) * 0.95,
+      width: width(context) * 0.9,
+
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Text(
