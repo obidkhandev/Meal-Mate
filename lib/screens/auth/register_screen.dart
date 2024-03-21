@@ -1,5 +1,6 @@
-import '../../utils/tools/file_importer.dart';
+import 'package:meal_mate/screens/auth/widget/register_with_social_media.dart';
 
+import '../../utils/tools/file_importer.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,74 +27,117 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        padding: EdgeInsets.all(20),
-        children: [
-          SizedBox(height: 80),
-          Center(
-            child: Text(
-              "Meat App",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(
-            "Everyone can be a chef",
-            style: Theme.of(context).textTheme.titleSmall
-          ),
-          TextFieldItem(
-            hintText: "Full Name",
-            controller: nameController,
-            isPassword: false,
-            errorText: "Name Error",
-            iconPath: Icon(Icons.person),
-          ),
-          SizedBox(height: 20),
-          TextFieldItem(
-            hintText: "Email address",
-            controller: emailController,
-            isPassword: false,
-            errorText: "Email Error",
-            iconPath: Icon(Icons.email),
-          ),
-          SizedBox(height: 20),
-          TextFieldItem(
-            hintText: "Password",
-            controller: passwordController,
-            isPassword: true,
-            errorText: "Password Error",
-            iconPath: Icon(Icons.lock),
-          ),
-          SizedBox(height: 40),
-          IconButton(
-            // borderRadius: BorderRadius.circular(20),
-            onPressed: (){
-              context.read<AuthViewModel>().registerUser(
-                context,
-                email: emailController.text,
-                password: passwordController.text,
-                username: nameController.text,
-              );
-            },
-            icon: Container(
-              height: 50,
-              width: double.infinity,
-              alignment: Alignment.center,
-      
-              decoration: BoxDecoration(
-                color: Color(0xff86BF3E),
-              borderRadius: BorderRadius.circular(12),
-                // shape: BoxShape.circle,
+      body: context.watch<AuthViewModel>().loading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primary.withOpacity(0.8),
               ),
-              child: Text("Continue",style: TextStyle(color: Colors.white),),
+            )
+          : ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              padding: EdgeInsets.all(20.sp),
+              children: [
+                SizedBox(height: 70.h),
+                Center(
+                  child: Text("Meal Mate",
+                      style: Theme.of(context).textTheme.headlineLarge),
+                ),
+                Center(
+                  child: Text("Everyone can be a chef",
+                      style: Theme.of(context).textTheme.titleSmall),
+                ),
+                SizedBox(height: 20.h),
+                TextFieldItem(
+                  hintText: "Full Name",
+                  controller: nameController,
+                  isPassword: false,
+                  errorText: "Name Error",
+                  iconPath: Icon(
+                    Icons.person,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                TextFieldItem(
+                  hintText: "Email address",
+                  controller: emailController,
+                  isPassword: false,
+                  errorText: "Email Error",
+                  iconPath: Icon(Icons.email,
+                      color: Theme.of(context).iconTheme.color),
+                ),
+                SizedBox(height: 20.h),
+                TextFieldItem(
+                  hintText: "Password",
+                  controller: passwordController,
+                  isPassword: true,
+                  errorText: "Password Error",
+                  iconPath: Icon(Icons.lock_open_rounded,
+                      color: Theme.of(context).iconTheme.color),
+                ),
+                SizedBox(height: 40.h),
+                RoundedButton(
+                    title: "Sign Up",
+                    onTap: () {
+                      context.read<AuthViewModel>().registerUser(
+                            context,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            username: nameController.text,
+                          );
+                    }),
+                const MyDivider(),
+                RegisterWithSocialMedia(
+                  width: double.infinity,
+                  title: "Continue with Google",
+                  iconPath: AppImages.googleLogo,
+                  onTap: () {},
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RegisterWithSocialMedia(
+                      width: width(context) / 2.4,
+                      title: "Facebook",
+                      iconPath: AppImages.facebookLogo,
+                      onTap: () {},
+                    ),
+                    RegisterWithSocialMedia(
+                      width: width(context) / 2.4,
+                      title: "Apple",
+                      iconPath: AppImages.appleLogo,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account with us?",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, RouteName.signIn);
+                      },
+                      child: Text(
+                        "Login",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-          ElevatedButton(onPressed: (){
-            Navigator.pushReplacementNamed(context,RouteName.register);
-          }, child: Text("Register"))
-        ],
-      ),
     );
   }
 }

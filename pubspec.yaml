@@ -22,6 +22,8 @@ dependencies:
   flutter_screenutil: ^5.9.0
   url_launcher: ^6.2.5
   adaptive_theme: ^3.6.0
+  zoom_tap_animation: ^1.1.0
+  flutter_svg: ^2.0.10+1
 
   # ---------------------------
 dev_dependencies:
@@ -43,7 +45,7 @@ flutter:
 
 
   fonts:
-     - family: Cerapro
+     - family: Cera Pro
        fonts:
          - asset: assets/fonts/cerapro-regular.ttf
 

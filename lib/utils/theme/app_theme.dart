@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meal_mate/utils/colors/app_colors.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData(
@@ -10,6 +11,12 @@ class AppTheme {
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.light,
         statusBarColor: Colors.white,
+      ),
+    ),
+    iconTheme: IconThemeData(color: AppColors.borderShade600),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.borderShade600),
       ),
     ),
     shadowColor: Colors.black,
@@ -127,16 +134,20 @@ class AppTheme {
         statusBarColor: Colors.grey,
       ),
     ),
+    iconTheme: IconThemeData(color: AppColors.borderShade400),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(
         backgroundColor: Colors.white,
-
       ),
     ),
-
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.all((Colors.white)),
       trackOutlineColor: MaterialStateProperty.all((Colors.red)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.borderShade400),
+      ),
     ),
     textTheme: const TextTheme(
       displayLarge: TextStyle(
