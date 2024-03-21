@@ -34,15 +34,15 @@ class AuthViewModel extends ChangeNotifier {
         showErrorForRegister(e.code, context);
       } catch (error) {
         if (!context.mounted) return;
-        showSnackbar(
-          context: context,
-          message: "Noma'lum xatolik yuz berdi:$error.",
+        myAnimatedSnackBar(
+          context,
+          "Noma'lum xatolik yuz berdi:$error.",
         );
       }
     } else {
-      showSnackbar(
-        context: context,
-        message: "Login yoki Parolni xato kiritdingiz!",
+      myAnimatedSnackBar(
+        context,
+        "Login yoki Parolni xato kiritdingiz!",
       );
     }
   }
@@ -66,15 +66,15 @@ class AuthViewModel extends ChangeNotifier {
         showErrorForLogin(err.code, context);
       } catch (error) {
         if (!context.mounted) return;
-        showSnackbar(
-          context: context,
-          message: "Noma'lum xatolik yuz berdi:$error.",
+        myAnimatedSnackBar(
+          context,
+          "Noma'lum xatolik yuz berdi:$error.",
         );
       }
     } else {
-      showSnackbar(
-        context: context,
-        message: "Login yoki Parolni xato kiritdingiz!",
+      myAnimatedSnackBar(
+        context,
+        "Login yoki Parolni xato kiritdingiz!",
       );
     }
   }
@@ -102,10 +102,8 @@ class AuthViewModel extends ChangeNotifier {
     }
     _notify(false);
   }
-
   _notify(bool v) {
     _isLoading = v;
     notifyListeners();
   }
-
 }

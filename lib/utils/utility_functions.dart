@@ -1,23 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:meal_mate/utils/tools/file_importer.dart';
 
-showSnackbar({required BuildContext context, required String message}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: Colors.green,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(16),
-          topLeft: Radius.circular(16),
+myAnimatedSnackBar(BuildContext context,String message){
+  return AnimatedSnackBar(
+      duration: const Duration(seconds: 2),
+      builder: (context){
+    return Container(
+      padding: EdgeInsets.all(8.sp),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1, color: AppColors.primary),
+      ),
+      width: width(context) * 0.95,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Text(
+          message,
+          maxLines: 5,
+          style: TextStyle(fontSize: 14),
         ),
       ),
-      content: Text(
-        message,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white, fontSize: 32),
-      ),
-    ),
-  );
+    );
+  }).show(context);
 }
+
 
 showErrorForRegister(
   String code,
@@ -26,16 +32,16 @@ showErrorForRegister(
   if (code == 'weak-password') {
     debugPrint('The password provided is too weak.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Passwordni xato kiritdingiz",
+    myAnimatedSnackBar(
+       context,
+       "Passwordni xato kiritdingiz",
     );
   } else if (code == 'email-already-in-use') {
     debugPrint('The account already exists for that email.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Bu e-pochta uchun hisob allaqachon mavjud.",
+    myAnimatedSnackBar(
+      context,
+       "Bu e-pochta uchun hisob allaqachon mavjud.",
     );
   }
 }
@@ -47,30 +53,29 @@ showErrorForLogin(
   if (code == 'wrong-password') {
     debugPrint('The password provided is wrong.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Passwordni xato kiritdingiz",
+    myAnimatedSnackBar(
+      context, "Passwordni xato kiritdingiz",
     );
   } else if (code == 'invalid-email') {
     debugPrint('The e-mail is invalid.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Bu e-pochta yaqroqsiz.",
+    myAnimatedSnackBar(
+      context,
+      "Bu e-pochta yaqroqsiz.",
     );
   } else if (code == 'user-disabled') {
     debugPrint('The user is blocked.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Foydalanuvchi bloklangan.",
+    myAnimatedSnackBar(
+      context,
+      "Foydalanuvchi bloklangan.",
     );
   } else {
     debugPrint('The user is not found.');
     if (!context.mounted) return;
-    showSnackbar(
-      context: context,
-      message: "Foydalanuvchi topilmadi.",
+    myAnimatedSnackBar(
+       context,
+       "Foydalanuvchi topilmadi.",
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meal_mate/screens/auth/register_screen.dart';
 import 'package:meal_mate/screens/auth/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -17,14 +16,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
           // title: Text("Lo"),
           leading: IconButton(
-        onPressed: () {
+          onPressed: () {
           context.read<AuthViewModel>().logout(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => RegisterScreen(),
-            ),
-          );
+
         },
         icon: Icon(Icons.logout_sharp, color: Colors.red),
       )),
