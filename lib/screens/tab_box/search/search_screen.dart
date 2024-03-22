@@ -1,6 +1,6 @@
-import 'package:meal_mate/screens/search/widget/search_delegate.dart';
+import 'package:meal_mate/screens/tab_box/search/widget/search_delegate.dart';
 
-import '../../utils/tools/file_importer.dart';
+import '../../../utils/tools/file_importer.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

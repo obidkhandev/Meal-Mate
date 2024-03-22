@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:meal_mate/screens/add_screen/add_screen.dart';
-import 'package:meal_mate/screens/community/community_screen.dart';
-import 'package:meal_mate/screens/search/search_screen.dart';
+import 'package:meal_mate/screens/tab_box/community/community_screen.dart';
+import 'package:meal_mate/screens/tab_box/search/search_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../utils/tools/file_importer.dart';

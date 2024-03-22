@@ -15,6 +15,11 @@ class StepsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  gapList(){
+    stepsItem = [];
+    notifyListeners();
+  }
+
   setToList(int index, String value){
     stepsItem[index] = value;
     notifyListeners();

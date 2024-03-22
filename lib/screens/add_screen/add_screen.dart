@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meal_mate/data/model/category_model.dart';
-import 'package:meal_mate/screens/add_screen/view_model/add_view_model.dart';
+import 'package:meal_mate/screens/add_screen/view_model/main_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/category_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/ingredient_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/steps_view_model.dart';
@@ -53,7 +53,7 @@ class _AddScreenState extends State<AddScreen> {
                   final categoryViewModel = context.read<CategoryViewModel>();
                   final categoryEnum = CategoryEnum.values[activeIndex];
 
-                  // Insert category
+// Insert category
                   categoryViewModel.insertCategory(
                     CategoryModel(
                       categoryId: '', // Pass the appropriate categoryId
@@ -62,28 +62,32 @@ class _AddScreenState extends State<AddScreen> {
                     context,
                   );
 
-                  // Create FoodModel instance
+// Create FoodModel instance
                   final foodModel = FoodModel(
-                    docId: '', // Pass the appropriate docId
+                    docId: '',
+                    userEmail: context.read<AuthViewModel>().getUser!.email!,
+                    userName: context.read<AuthViewModel>().getUser!.displayName!,
                     timestamp: "${hourController.text}:${minuteController.text}",
                     foodDescription: descriptionController.text,
-                    stepsList: Provider.of<StepsViewModel>(context, listen: false).stepsItem,
+                    stepsList: Provider.of<StepsViewModel>(context, listen: false).stepsItem ?? [],
                     imageUrl: "https://i.pinimg.com/originals/20/63/25/206325d9203e6b3c5b79cfc5202ce046.jpg",
                     difficultly: "easy",
-                    ingredientList: Provider.of<IngredientViewModel>(context, listen: false).ingredientItem,
+                    ingredientList: Provider.of<IngredientViewModel>(context, listen: false).ingredientItem ?? [],
                     title: titleController.text,
                     categoryId: categoryViewModel.categoryId,
                   );
 
-                  // Check if FoodModel can be added to the database
+// Check if FoodModel can be added to the database
                   if (FoodModel.canAddToDB(foodModel)) {
                     context.read<ProductsViewModel>().insertProducts(foodModel, context);
-                    myAnimatedSnackBar(context, "Succes");
+                    context.read<IngredientViewModel>().gapList();
+                    context.read<StepsViewModel>().gapList();
+                    myAnimatedSnackBar(context, "Muvaffaqqiyatli qo'shildi");
                     Navigator.pop(context);
-
                   } else {
                     myAnimatedSnackBar(context, "Siz nimadurni kiritmadingiz");
                   }
+
                 },
                 child: const Text(
                   "Save",

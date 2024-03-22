@@ -1,4 +1,4 @@
-import 'package:meal_mate/screens/add_screen/view_model/add_view_model.dart';
+import 'package:meal_mate/screens/add_screen/view_model/main_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/category_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/ingredient_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/steps_view_model.dart';

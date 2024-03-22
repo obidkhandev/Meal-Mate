@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class FoodModel {
   final String docId;
   final String foodDescription;
@@ -10,9 +8,14 @@ class FoodModel {
   final String title;
   final String categoryId;
   final String timestamp;
+  final String userName;
+  final String userEmail;
 
   FoodModel({
+
     required this.docId,
+    required this.userName,
+    required this.userEmail,
     required this.timestamp,
     required this.foodDescription,
     required this.stepsList,
@@ -27,20 +30,27 @@ class FoodModel {
 
   factory FoodModel.fromJson(Map<String, dynamic> json) {
     return FoodModel(
+      userEmail: json["userEmail"] as String? ?? '',
+      userName: json["userName"] as String? ?? '',
       timestamp: json["timestamp"] as String? ?? '',
       docId: json["docId"] as String? ?? "",
       foodDescription: json["foodDescription"] as String? ?? "",
-      stepsList: json["stepsList"] as List<String>? ?? [],
+      // Ensure stepsList and ingredientList are casted to List<String>
+      stepsList: (json["stepsList"] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       imageUrl: json["imageUrl"] as String? ?? "",
       difficultly: json["difficultly"] as String? ?? "",
-      ingredientList: json["ingredientList"] as List<String>? ?? [],
+      // Ensure stepsList and ingredientList are casted to List<String>
+      ingredientList: (json["ingredientList"] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       title: json["title"] as String? ?? "",
       categoryId: json["categoryId"] as String? ?? "",
     );
   }
 
+
   Map<String, dynamic> toJson() {
     return {
+      "userName":userName,
+      "userEmail":userEmail,
       "timestamp":timestamp,
       "docId": docId,
       "foodDescription": foodDescription,
@@ -61,21 +71,24 @@ class FoodModel {
       "difficultly": difficultly,
       "ingredientList": ingredientList,
       "title": title,
-      "timestamp":timestamp,
+      "timestamp": timestamp,
       "categoryId": categoryId,
     };
   }
 
- static  bool canAddToDB(FoodModel foodModel){
+  static bool canAddToDB(FoodModel foodModel){
     if(foodModel.categoryId == '') return false;
     if(foodModel.foodDescription == '') return false;
-    if(foodModel.stepsList == []) return false;
+    if(foodModel.stepsList.isEmpty) return false; // Use isEmpty instead of comparing to []
     if(foodModel.title == '') return false;
-    if(foodModel.ingredientList == []) return false;
+    if(foodModel.ingredientList.isEmpty) return false; // Use isEmpty instead of comparing to []
     if(foodModel.timestamp == '') return false;
     if(foodModel.imageUrl == '') return false;
-  return true;
+    if(foodModel.userEmail == '') return false;
+    if(foodModel.userName == '') return false;
+    return true;
   }
+
 
 
 }

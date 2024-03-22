@@ -1,3 +1,6 @@
+import 'package:meal_mate/screens/add_screen/add_screen.dart';
+import 'package:meal_mate/screens/user_posts/users_posts.dart';
+import 'package:meal_mate/screens/widget/on_tap.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -103,15 +106,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 10.h),
                   Text("General",
                       style: Theme.of(context).textTheme.titleLarge),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthViewModel>().logout(context);
-                    },
-                    child: Text("Logout"),
-                  ),
+                  SizedBox(height: 20),
+                  ProfileGeneralItem(text: "About", onTap: () {}),
+                  ProfileGeneralItem(
+                      text: "Add Posts",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => AddScreen()),
+                        );
+                      }),
+                  ProfileGeneralItem(text: "My Posts", onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>UsersPost()));
+                  }),
+                  ProfileGeneralItem(text: "Logout", onTap: () {
+
+                  }),
                 ],
               ),
             ),
+    );
+  }
+}
+
+class ProfileGeneralItem extends StatelessWidget {
+  final String text;
+  final Function() onTap;
+
+  const ProfileGeneralItem(
+      {super.key, required this.text, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          text,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        IconButton(
+          onPressed: onTap,
+          icon: Icon(Icons.arrow_forward_ios),
+        ),
+      ],
     );
   }
 }
