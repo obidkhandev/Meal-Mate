@@ -28,7 +28,6 @@ class _TabBoxState extends State<TabBox> {
       HomePage(),
       SearchScreen(),
       CommunityScreen(),
-      // AddScreen(),
       ProfileScreen(),
     ];
   }

@@ -83,7 +83,7 @@ class _AddScreenState extends State<AddScreen> {
                     context.read<IngredientViewModel>().gapList();
                     context.read<StepsViewModel>().gapList();
                     myAnimatedSnackBar(context, "Muvaffaqqiyatli qo'shildi");
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   } else {
                     myAnimatedSnackBar(context, "Siz nimadurni kiritmadingiz");
                   }

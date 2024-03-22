@@ -48,7 +48,7 @@ class _UsersPostState extends State<UsersPost> {
           SizedBox(
             height: height(context) * 0.7,
             width: double.infinity,
-            child: context.watch<ProductsViewModel>().ownProducts == null
+            child: context.watch<ProductsViewModel>().ownProducts == []
                 ? Center(
                     child: Text("Siz hali hech nima kiritmadingiz"),
                   )
