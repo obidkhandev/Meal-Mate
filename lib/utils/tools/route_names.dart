@@ -11,4 +11,5 @@ class RouteName{
   static const String addRecipe = "/add_recipe";
   static const String category = "/category";
   static const String post = "/posts_screen";
+  static const String edit = "/edit";
 }

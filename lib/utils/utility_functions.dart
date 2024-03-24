@@ -1,3 +1,4 @@
+import 'package:meal_mate/screens/tab_box/profile/user_posts/tab_bar_user_posts.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 myAnimatedSnackBar(BuildContext context,String message){
@@ -26,6 +27,22 @@ myAnimatedSnackBar(BuildContext context,String message){
   }).show(context);
 }
 
+
+showMyAlertDialog(BuildContext context, Function() onTap1, Function() onTap2, String actionName1,String actionName2,){
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AlertDialogIconButton(icon: Icons.edit, onTap: onTap1,actionName: actionName1,),
+              AlertDialogIconButton(icon: Icons.delete, onTap: onTap2,actionName: actionName2,)
+            ],
+          ),
+        );
+      });
+}
 
 showErrorForRegister(
   String code,

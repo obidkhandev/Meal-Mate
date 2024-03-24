@@ -20,6 +20,8 @@ class AppRoute {
         return navigate(const ProfileScreen());
       case RouteName.addRecipe:
         return navigate(const AddScreen());
+        case RouteName.edit:
+        return navigate(const EditScreen());
 
       default:
         return navigate(

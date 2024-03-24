@@ -29,3 +29,5 @@ export 'package:animated_snack_bar/animated_snack_bar.dart';
 export 'package:meal_mate/data/model/food_model.dart';
 export 'package:meal_mate/utils/constants/app_constants.dart';
 export  'package:meal_mate/screens/add_screen/view_model/ingredient_view_model.dart';
+export 'package:meal_mate/screens/add_screen/view_model/main_view_model.dart';
+export 'package:meal_mate/screens/edit/edit_screen.dart';
