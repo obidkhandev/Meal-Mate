@@ -77,7 +77,8 @@ class TabBarUserPosts extends StatelessWidget {
                                             onPressed: () {
                                              showMyAlertDialog(context,(){
                                                Navigator.pop(context);
-                                               Navigator.pushNamed(context, RouteName.edit);
+                                               debugPrint(food.docId);
+                                               Navigator.pushNamed(context, RouteName.edit,arguments: food.docId);
                                              },() {
                                               context
                                                   .read<

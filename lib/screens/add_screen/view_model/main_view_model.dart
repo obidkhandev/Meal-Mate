@@ -4,16 +4,58 @@ import 'package:meal_mate/utils/tools/file_importer.dart';
 class ProductsViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get getLoader => _isLoading;
-  List<FoodModel> categoryProduct = [];
+  FoodModel? foodModel;
   List<FoodModel> ownProducts = [];
+
+
+  Future<void> getProductFromId(String productId) async {
+    // Notify listeners that fetching is in progress
+    _notify(true);
+
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection(AppConstants.foodDBTable)
+          .doc(productId)
+          .get();
+
+      // Check if the document exists
+      if (snapshot.exists) {
+        // Convert the snapshot data to a FoodModel object
+        FoodModel productData = FoodModel.fromJson(snapshot.data()!);
+
+        // Notify listeners that fetching is completed and update the foodModel
+        foodModel = productData;
+        _notify(false);
+      } else {
+        // Notify listeners that fetching is completed (even if not successful)
+        _notify(false);
+
+        // Handle the case when the document does not exist
+        debugPrint("Document with ID $productId does not exist.");
+      }
+    } catch (error) {
+      // Notify listeners that fetching is completed (even if not successful)
+      _notify(false);
+
+      // Handle any errors that occur during fetching
+      debugPrint('Error fetching product: $error');
+    }
+  }
+
+
 
   Stream<List<FoodModel>> listenProducts() => FirebaseFirestore.instance
       .collection(AppConstants.foodDBTable)
       .snapshots()
-      .map(
-        (event) =>
-        event.docs.map((doc) => FoodModel.fromJson(doc.data())).toList(),
-  );
+      .map((event) {
+    List<FoodModel> foodList = event.docs.map((doc) => FoodModel.fromJson(doc.data())).toList();
+
+    foodList.sort((a, b) => b.timestamp.compareTo(a.timestamp)); // Sort in descending order
+
+    return foodList;
+  });
+
 
   Future<void> getProductsByEmail(String email) async {
     _notify(true);

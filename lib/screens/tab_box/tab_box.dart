@@ -41,6 +41,7 @@ class _TabBoxState extends State<TabBox> {
           selectedItemColor: AppColors.primary,
           unselectedItemColor: AppColors.borderShade600,
           currentIndex: context.watch<TabViewModel>().getIndex,
+
           onTap: (newIndex){
             context.read<TabViewModel>().changeIndex(newIndex);
           },
