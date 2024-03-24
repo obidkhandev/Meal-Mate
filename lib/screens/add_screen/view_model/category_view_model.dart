@@ -36,14 +36,13 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
-  updateProduct(CategoryModel productModel, BuildContext context) async {
+  updateCategory(CategoryModel productModel, BuildContext context) async {
     try {
       _notify(true);
       await FirebaseFirestore.instance
           .collection(AppConstants.category)
           .doc(productModel.categoryId)
           .update(productModel.toJsonForUpdate());
-
       _notify(false);
     } on FirebaseException catch (error) {
       if (!context.mounted) return;

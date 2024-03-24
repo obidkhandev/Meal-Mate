@@ -1,5 +1,5 @@
 import 'package:meal_mate/screens/add_screen/add_screen.dart';
-import 'package:meal_mate/screens/user_posts/users_posts.dart';
+import 'package:meal_mate/screens/tab_box/profile/user_posts/users_posts.dart';
 import 'package:meal_mate/screens/widget/on_tap.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
@@ -113,14 +113,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => AddScreen()),
+                          MaterialPageRoute(builder: (_) => const AddScreen()),
                         );
                       }),
                   ProfileGeneralItem(text: "My Posts", onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>UsersPost()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>const UsersPost()));
                   }),
                   ProfileGeneralItem(text: "Logout", onTap: () {
-
+context.read<AuthViewModel>().logout(context);
                   }),
                 ],
               ),
@@ -138,18 +138,21 @@ class ProfileGeneralItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        IconButton(
-          onPressed: onTap,
-          icon: Icon(Icons.arrow_forward_ios),
-        ),
-      ],
+    return OnTap(
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          IconButton(
+            onPressed: onTap,
+            icon: Icon(Icons.arrow_forward_ios),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2,7 +2,8 @@ import 'package:meal_mate/utils/tools/file_importer.dart';
 
 myAnimatedSnackBar(BuildContext context,String message){
   return AnimatedSnackBar(
-      duration: const Duration(seconds: 3),
+
+      duration: const Duration(seconds: 2),
       builder: (context){
     return Container(
       padding: EdgeInsets.all(8.sp),

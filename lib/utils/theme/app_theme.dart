@@ -126,6 +126,7 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.black,
+
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       systemOverlayStyle: SystemUiOverlayStyle(
@@ -134,7 +135,7 @@ class AppTheme {
         statusBarColor: Colors.grey,
       ),
     ),
-    iconTheme: IconThemeData(color: AppColors.borderShade400),
+    iconTheme:  const IconThemeData(color: AppColors.borderShade400),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(
         backgroundColor: Colors.white,
@@ -144,7 +145,7 @@ class AppTheme {
       thumbColor: MaterialStateProperty.all((Colors.white)),
       trackOutlineColor: MaterialStateProperty.all((Colors.red)),
     ),
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.borderShade400),
       ),
