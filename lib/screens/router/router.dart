@@ -21,7 +21,7 @@ class AppRoute {
       case RouteName.addRecipe:
         return navigate(const AddScreen());
         case RouteName.edit:
-        return navigate( EditScreen(docId: settings.arguments as String,));
+        return navigate(EditScreen(docId: settings.arguments as String,));
 
       default:
         return navigate(

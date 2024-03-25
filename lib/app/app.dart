@@ -1,4 +1,5 @@
 
+import 'package:meal_mate/service/local_notification_service.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 import '../screens/router/router.dart';
@@ -12,6 +13,8 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+    LocalNotificationService.localNotificationService.init(navigatorKey);
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {

@@ -10,19 +10,19 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
-  _fetchProductData()  {
-    Future.microtask(()  {
-       try {
-         context.read<ProductsViewModel>().getProductFromId(widget.docId);
+  _fetchProductData() {
+    Future.microtask(() {
+      try {
+        context.read<ProductsViewModel>().getProductFromId(widget.docId);
         FoodModel? foodModel = context.read<ProductsViewModel>().foodModel;
         if (foodModel != null) {
-        context.read<ProductsViewModel>().foodModel = foodModel;
+          context.read<ProductsViewModel>().foodModel = foodModel;
         } else {
           debugPrint("Update Error");
         }
-        } catch (error) {
+      } catch (error) {
         debugPrint("Update Error $error");
-    }
+      }
     });
   }
 
@@ -56,33 +56,50 @@ class _EditScreenState extends State<EditScreen> {
                   title: titleController.text,
                   timestamp: time.text),
               context);
+          LocalNotificationService().showNotification(
+              notificationModel: NotificationModel(
+                  title: titleController.text, id: DateTime.now().millisecond),
+              body: "Muvvaqqiyatli o'zgartirildi");
           myAnimatedSnackBar(context, "Mufuvvaqqiyatli o'zgartirildi");
           Navigator.pop(context);
         },
-        child: Icon(Icons.save),
+        child: const Icon(Icons.save),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0.h),
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController..text = context.watch<ProductsViewModel>().foodModel!.title,
-              decoration: const InputDecoration(
-                  hintText: "Title", border: UnderlineInputBorder()),
+      body: context.read<ProductsViewModel>().foodModel == null
+          ? Center(child: Text("Empty"))
+          : Padding(
+              padding: EdgeInsets.all(16.0.h),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: titleController
+                      ..text =
+                          context.watch<ProductsViewModel>().foodModel!.title,
+                    decoration: const InputDecoration(
+                        hintText: "Title", border: UnderlineInputBorder()),
+                  ),
+                  TextField(
+                    controller: descriptionController
+                      ..text = context
+                          .watch<ProductsViewModel>()
+                          .foodModel!
+                          .foodDescription,
+                    decoration: const InputDecoration(
+                        hintText: "Description",
+                        border: UnderlineInputBorder()),
+                  ),
+                  TextField(
+                    controller: time
+                      ..text = context
+                          .watch<ProductsViewModel>()
+                          .foodModel!
+                          .timestamp,
+                    decoration: const InputDecoration(
+                        hintText: "Time", border: UnderlineInputBorder()),
+                  ),
+                ],
+              ),
             ),
-            TextField(
-              controller: descriptionController..text = context.watch<ProductsViewModel>().foodModel!.foodDescription,
-              decoration: const InputDecoration(
-                  hintText: "Description", border: UnderlineInputBorder()),
-            ),
-            TextField(
-              controller: time..text = context.watch<ProductsViewModel>().foodModel!.timestamp,
-              decoration: const InputDecoration(
-                  hintText: "Time", border: UnderlineInputBorder()),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

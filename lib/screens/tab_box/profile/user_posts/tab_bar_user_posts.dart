@@ -1,3 +1,5 @@
+import 'package:meal_mate/service/local_notification_service.dart';
+
 import '../../../../utils/tools/file_importer.dart';
 
 class TabBarUserPosts extends StatelessWidget {
@@ -31,7 +33,7 @@ class TabBarUserPosts extends StatelessWidget {
                       itemBuilder: (context, index) {
                         FoodModel food = list[index];
                         return Container(
-                          padding: const EdgeInsets.all(10),
+                          // padding: const EdgeInsets.all(10),
                           margin: EdgeInsets.symmetric(
                             horizontal: 10.w,
                             vertical: 10.h,
@@ -45,10 +47,12 @@ class TabBarUserPosts extends StatelessWidget {
                             children: [
                               Container(
                                 height: 120.h,
-                                width: width(context) * 0.5,
-                                padding: const EdgeInsets.all(10),
+                                width: width(context) * 0.4,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12.r),
+                                    bottomLeft:  Radius.circular(12.r),
+                                  ),
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
@@ -57,7 +61,7 @@ class TabBarUserPosts extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 20.w),
+                              SizedBox(width: 10.w),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,11 +71,16 @@ class TabBarUserPosts extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          food.title,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge,
+                                        SizedBox(
+                                          width: width(context) * 0.3,
+                                          child: Text(
+                                            food.title,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge,
+                                          ),
                                         ),
                                         IconButton(
                                             onPressed: () {

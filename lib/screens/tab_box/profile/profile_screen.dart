@@ -1,6 +1,4 @@
-import 'package:meal_mate/screens/add_screen/add_screen.dart';
-import 'package:meal_mate/screens/tab_box/profile/user_posts/users_posts.dart';
-import 'package:meal_mate/screens/widget/on_tap.dart';
+import 'package:meal_mate/screens/tab_box/profile/local_notif_screen.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -32,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,11 +39,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "${context.watch<AuthViewModel>().getUser!.displayName}\n",
+                                  "${context.watch<AuthViewModel>().getUser!.displayName ?? ""}\n",
                               style: Theme.of(context).textTheme.titleLarge),
                           TextSpan(
                               text:
-                                  "${context.watch<AuthViewModel>().getUser!.email}\n",
+                                  "${context.watch<AuthViewModel>().getUser!.email ?? ""}\n",
                               style: Theme.of(context).textTheme.titleSmall),
                         ]),
                       ),
@@ -63,16 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(context
-                                          .watch<AuthViewModel>()
-                                          .getUser!
-                                          .photoURL !=
-                                      null
-                                  ? context
                                       .watch<AuthViewModel>()
                                       .getUser!
-                                      .photoURL
-                                      .toString()
-                                  : "https://www.kindpng.com/picc/m/269-2697881_computer-icons-user-clip-art-transparent-png-icon.png"),
+                                      .photoURL ??
+                                  "https://www.kindpng.com/picc/m/269-2697881_computer-icons-user-clip-art-transparent-png-icon.png"),
                             ),
                           ),
                         ),
@@ -106,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 10.h),
                   Text("General",
                       style: Theme.of(context).textTheme.titleLarge),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ProfileGeneralItem(text: "About", onTap: () {}),
                   ProfileGeneralItem(
                       text: "Add Posts",
@@ -116,12 +108,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           MaterialPageRoute(builder: (_) => const AddScreen()),
                         );
                       }),
-                  ProfileGeneralItem(text: "My Posts", onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>const UsersPost()));
-                  }),
-                  ProfileGeneralItem(text: "Logout", onTap: () {
-context.read<AuthViewModel>().logout(context);
-                  }),
+                  ProfileGeneralItem(
+                      text: "My Posts",
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const UsersPost()));
+                      }),
+                  ProfileGeneralItem(
+                      text: "Local Notifications",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LocalNotifScreen(),
+                          ),
+                        );
+                      }),
+                  ProfileGeneralItem(
+                      text: "Logout",
+                      onTap: () {
+                        context.read<AuthViewModel>().logout(context);
+                      }),
                 ],
               ),
             ),

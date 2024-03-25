@@ -108,8 +108,7 @@ class FoodModel {
   static bool canAddToDB(FoodModel foodModel) {
     if (foodModel.categoryId == '') return false;
     if (foodModel.foodDescription == '') return false;
-    if (foodModel.stepsList.isEmpty)
-      return false; // Use isEmpty instead of comparing to []
+    if (foodModel.stepsList.isEmpty) return false; // Use isEmpty instead of comparing to []
     if (foodModel.title == '') return false;
     if (foodModel.ingredientList.isEmpty)
       return false; // Use isEmpty instead of comparing to []
