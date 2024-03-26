@@ -56,10 +56,14 @@ class _EditScreenState extends State<EditScreen> {
                   title: titleController.text,
                   timestamp: time.text),
               context);
+          // notification add
+          NotificationModel notifModel = NotificationModel(
+              title: titleController.text, id: DateTime.now().millisecond);
+          context.read<NotificationViewModel>().addToNotification(notifModel);
           LocalNotificationService().showNotification(
-              notificationModel: NotificationModel(
-                  title: titleController.text, id: DateTime.now().millisecond),
+              notificationModel: notifModel,
               body: "Muvvaqqiyatli o'zgartirildi");
+
           myAnimatedSnackBar(context, "Mufuvvaqqiyatli o'zgartirildi");
           Navigator.pop(context);
         },

@@ -30,7 +30,7 @@ export 'package:meal_mate/data/model/food_model.dart';
 export 'package:meal_mate/utils/constants/app_constants.dart';
 export  'package:meal_mate/screens/add_screen/view_model/ingredient_view_model.dart';
 export 'package:meal_mate/screens/add_screen/view_model/main_view_model.dart';
-export 'package:meal_mate/screens/edit/edit_screen.dart';
+export 'package:meal_mate/screens/tab_box/profile/user_posts/edit/edit_screen.dart';
 export  'package:meal_mate/screens/widget/global_app_bar.dart';
 export 'package:meal_mate/screens/add_screen/add_screen.dart';
 export 'package:meal_mate/screens/tab_box/profile/user_posts/users_posts.dart';

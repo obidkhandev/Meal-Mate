@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:meal_mate/screens/widget/rounded_button.dart';
+
 import '../../../utils/tools/file_importer.dart';
+import 'widget/community_detail.dart';
 
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});
@@ -6,12 +10,13 @@ class CommunityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        const GlobalAppBar(
-          title: "Community",
-        ),
-        StreamBuilder<List<FoodModel>>(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const GlobalAppBar(
+            title: "Community",
+          ),
+          StreamBuilder<List<FoodModel>>(
             stream: context.read<ProductsViewModel>().listenProducts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -24,23 +29,26 @@ class CommunityScreen extends StatelessWidget {
                 // Handle displaying the list of products
                 List<FoodModel> list = snapshot.data as List<FoodModel>;
                 return Expanded(
-                  child: ListView.builder(
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        FoodModel food = list[index];
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 20),
-                            Text(food.title),
-                          ],
-                        );
-                      }),
+                  child: GridView.builder(
+                    itemCount: list.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      // crossAxisSpacing: 10,
+                      mainAxisExtent: 265.h,
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      FoodModel foodModel = list[index];
+                      return CommunityItemWidget(foodModel: foodModel);
+                    },
+                  ),
                 );
               }
-            }),
-      ],
-    ));
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
+
 

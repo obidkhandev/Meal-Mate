@@ -7,7 +7,7 @@ import 'package:meal_mate/screens/tab_box/profile/user_posts/tab_bar_user_posts.
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 import '../../../add_screen/view_model/main_view_model.dart';
-import '../../../edit/edit_screen.dart';
+import 'edit/edit_screen.dart';
 
 class UsersPost extends StatefulWidget {
   const UsersPost({super.key});

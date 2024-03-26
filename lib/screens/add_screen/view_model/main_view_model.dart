@@ -5,6 +5,7 @@ class ProductsViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get getLoader => _isLoading;
   FoodModel? foodModel;
+  FoodModel get getFood => foodModel!;
   List<FoodModel> ownProducts = [];
 
 
@@ -14,18 +15,13 @@ class ProductsViewModel extends ChangeNotifier {
 
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
-          .collection(AppConstants.foodDBTable)
-          .doc(productId)
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await firestore.collection(AppConstants.foodDBTable).doc(productId).get();
 
       // Check if the document exists
       if (snapshot.exists) {
         // Convert the snapshot data to a FoodModel object
-        FoodModel productData = FoodModel.fromJson(snapshot.data()!);
-
-        // Notify listeners that fetching is completed and update the foodModel
-        foodModel = productData;
+        foodModel =  FoodModel.fromJson(snapshot.data()!);
         _notify(false);
       } else {
         // Notify listeners that fetching is completed (even if not successful)
@@ -33,6 +29,7 @@ class ProductsViewModel extends ChangeNotifier {
 
         // Handle the case when the document does not exist
         debugPrint("Document with ID $productId does not exist.");
+        return null; // Return null to indicate that no product was found
       }
     } catch (error) {
       // Notify listeners that fetching is completed (even if not successful)
@@ -40,8 +37,10 @@ class ProductsViewModel extends ChangeNotifier {
 
       // Handle any errors that occur during fetching
       debugPrint('Error fetching product: $error');
+      return null; // Return null in case of an error
     }
   }
+
 
 
 

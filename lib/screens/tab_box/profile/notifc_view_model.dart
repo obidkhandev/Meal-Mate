@@ -16,4 +16,8 @@ class NotificationViewModel extends ChangeNotifier{
     notificationList.remove(model);
     notifyListeners();
   }
+  removeAll(){
+    notificationList.removeRange(0, notificationList.length);
+    notifyListeners();
+  }
 }

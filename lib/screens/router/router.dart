@@ -1,10 +1,12 @@
 import 'package:meal_mate/screens/add_screen/add_screen.dart';
+import 'package:meal_mate/screens/detail/detail_screen.dart';
 
 import '../../utils/tools/file_importer.dart';
 
 
 class AppRoute {
   static Route generateRoute(RouteSettings settings) {
+    var arg = settings.arguments;
     switch (settings.name) {
       case RouteName.splash:
         return navigate(const SplashScreen());
@@ -22,6 +24,8 @@ class AppRoute {
         return navigate(const AddScreen());
         case RouteName.edit:
         return navigate(EditScreen(docId: settings.arguments as String,));
+      case RouteName.detail:
+        return navigate(DetailScreen(uid: arg as String));
 
       default:
         return navigate(

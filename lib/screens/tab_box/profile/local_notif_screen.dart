@@ -1,6 +1,7 @@
 import 'package:meal_mate/screens/tab_box/profile/notif_model.dart';
 import 'package:meal_mate/screens/tab_box/profile/notifc_view_model.dart';
 import 'package:meal_mate/service/local_notification_service.dart';
+import 'package:meal_mate/utils/tools/assistant.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class LocalNotifScreen extends StatelessWidget {
@@ -11,12 +12,19 @@ class LocalNotifScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Local Notification"),
+        actions: [
+          TextButton(onPressed: (){
+            context.read<NotificationViewModel>().removeAll();
+            myAnimatedSnackBar(context, "Local notifications remove all");
+          }, child: Text("Clear All")),
+        ],
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         children: [
           context.watch<NotificationViewModel>().notifications.isEmpty
-              ? const Center(
+              ?  Center(
+            heightFactor: height(context) / 30,
                   child: Text("Siz hali notification qabul qilmadingiz"),
                 )
               : Consumer<NotificationViewModel>(builder: (context,viewModel,child){
