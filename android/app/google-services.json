@@ -40,6 +40,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053568305286:android:3ce821f161363aa2992907",
+        "android_client_info": {
+          "package_name": "uz.obidkhandev.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053568305286-tclfh5817lbi46nnqbc27sn7vvv5r1pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Tb52t8-z4lLo4izJF0Citt2Evm-aVLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053568305286-tclfh5817lbi46nnqbc27sn7vvv5r1pc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1053568305286-dpi8hbotm00tr1j5i419eb5smkvigjqk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mealMate"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

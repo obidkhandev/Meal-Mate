@@ -1,6 +1,5 @@
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
-import 'notif_model.dart';
 
 class NotificationViewModel extends ChangeNotifier{
 

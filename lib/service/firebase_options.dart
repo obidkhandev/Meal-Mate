@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCEe-a1CUhpBRZFUKYzNVLv0fZH54bHd10',
-    appId: '1:1053568305286:web:de8f44d58f02b6d0992907',
-    messagingSenderId: '1053568305286',
-    projectId: 'meal-mate-2243e',
-    authDomain: 'meal-mate-2243e.firebaseapp.com',
-    storageBucket: 'meal-mate-2243e.appspot.com',
-    measurementId: 'G-53B933KFLW',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD3Tb52t8-z4lLo4izJF0Citt2Evm-aVLM',
-    appId: '1:1053568305286:android:8940734faad28329992907',
+    appId: '1:1053568305286:android:3ce821f161363aa2992907',
     messagingSenderId: '1053568305286',
     projectId: 'meal-mate-2243e',
     storageBucket: 'meal-mate-2243e.appspot.com',
@@ -66,10 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBBOEnYrlswaTh7nKshqpLofk28tIFbPsQ',
-    appId: '1:1053568305286:ios:f89049e2f6a3b7d1992907',
+    appId: '1:1053568305286:ios:8b8434c196dc9f2e992907',
     messagingSenderId: '1053568305286',
     projectId: 'meal-mate-2243e',
     storageBucket: 'meal-mate-2243e.appspot.com',
-    iosBundleId: 'com.example.mealMate',
+    iosClientId: '1053568305286-h2lu716v7o4jl0ce1345t1ad8omlp3ag.apps.googleusercontent.com',
+    iosBundleId: 'uz.obidkhandev.com',
   );
 }
