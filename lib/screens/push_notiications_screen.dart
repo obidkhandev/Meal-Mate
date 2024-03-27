@@ -1,9 +1,6 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:gadget_shop/data/api_provider/api_provider.dart';
-import 'package:gadget_shop/services/local_notification_service.dart';
-import 'package:gadget_shop/utils/styles/app_text_style.dart';
+import 'package:meal_mate/data/network_model/network_model.dart';
+import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class PushNotificationScreen extends StatefulWidget {
   const PushNotificationScreen({super.key});
@@ -14,22 +11,29 @@ class PushNotificationScreen extends StatefulWidget {
 
 class _PushNotificationScreenState extends State<PushNotificationScreen> {
   String fcmToken = "";
+  int id = 1;
 
   void init() async {
     fcmToken = await FirebaseMessaging.instance.getToken() ?? "";
     debugPrint("FCM TOKEN:$fcmToken");
+
     final token = await FirebaseMessaging.instance.getAPNSToken();
+
     debugPrint("getAPNSToken : ${token.toString()}");
+
     LocalNotificationService.localNotificationService;
     //Foreground
     FirebaseMessaging.onMessage.listen(
-          (RemoteMessage remoteMessage) {
+      (RemoteMessage remoteMessage) {
         if (remoteMessage.notification != null) {
           LocalNotificationService().showNotification(
-            title: remoteMessage.notification!.title!,
             body: remoteMessage.notification!.body!,
-            id: DateTime.now().second.toInt(),
+            notificationModel: NotificationModel(
+              title: remoteMessage.notification!.title!,
+              id: id,
+            ),
           );
+          id++;
 
           debugPrint(
               "FOREGROUND NOTIFICATION:${remoteMessage.notification!.title}");
@@ -54,11 +58,23 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     super.initState();
   }
 
+  bool isSubscribe = false;
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController bodyController = TextEditingController();
+
+  @override
+  void dispose() {
+    bodyController.dispose();
+    titleController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Push Notifications Example"),
+        title: const Text("Discover Any News"),
       ),
       body: Container(
         padding: const EdgeInsets.all(24),
@@ -67,54 +83,69 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
           children: [
             TextButton(
               onPressed: () {
-                FirebaseMessaging.instance.subscribeToTopic("my_app_news");
+                isSubscribe == false
+                    ? FirebaseMessaging.instance.subscribeToTopic("news")
+                    : FirebaseMessaging.instance.unsubscribeFromTopic("news");
+                isSubscribe = !isSubscribe;
+                setState(() {});
               },
               child: Text(
-                "Subscribe to topic: my_app_news",
-                style: AppTextStyle.interSemiBold.copyWith(
+                isSubscribe == false ? "Subscribe" : "UnSubscribe",
+                style: AppTextStyle.recolateBlack.copyWith(
                   fontSize: 24,
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                FirebaseMessaging.instance.unsubscribeFromTopic("my_app_news");
-              },
-              child: Text(
-                "Unsubscribe from topic: my_app_news",
-                style: AppTextStyle.interSemiBold.copyWith(
-                  fontSize: 24,
-                ),
+            SizedBox(height: 30.h),
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                hintText: "title",
               ),
             ),
-            TextButton(
-              onPressed: () async {
-                String messageId = await ApiProvider().sendNotificationToUsers(
-                  fcmToken: fcmToken,
-                  title: "Bu test notification",
-                  body: "Yana test notiifcation",
-                );
-                debugPrint("MESSAGE ID:$messageId");
-              },
-              child: Text(
-                "SEND MESSAGE TO USER",
-                style: AppTextStyle.interSemiBold.copyWith(
-                  fontSize: 24,
-                ),
+            SizedBox(height: 20.h),
+            TextField(
+              controller: bodyController,
+              decoration: const InputDecoration(
+                hintText: "body",
               ),
             ),
+            const Spacer(),
             TextButton(
               onPressed: () async {
-                String messageId = await ApiProvider().sendNotificationToUsers(
-                  topicName: "news",
-                  title: "Bu test notification",
-                  body: "Yana test notiifcation",
-                );
-                debugPrint("MESSAGE ID:$messageId");
+                if (isSubscribe) {
+                  Object messageId =
+                      await ApiProvider().sendNotificationToUsers(
+                    fcmToken: fcmToken,
+                    newText: titleController.text,
+                    newTitle: bodyController.text,
+                    title: titleController.text,
+                    body: bodyController.text,
+                  );
+                  debugPrint("MESSAGE ID:$messageId");
+                } else {
+                  Object messageId =
+                      await ApiProvider().sendNotificationToUsers(
+                    newTitle: titleController.text,
+                    newText: bodyController.text,
+                    topicName: "news",
+                    title: titleController.text,
+                    body: bodyController.text,
+                  );
+                  debugPrint("MESSAGE ID:$messageId");
+                  context.read<NotificationViewModel>().addToNotification(
+                      NotificationModel(title: titleController.text, id: id));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PushNotificationScreen(),
+                    ),
+                  );
+                }
               },
               child: Text(
-                "SEND MESSAGE TO USERS",
-                style: AppTextStyle.interSemiBold.copyWith(
+                "SEND",
+                style: AppTextStyle.recolateMedium.copyWith(
                   fontSize: 24,
                 ),
               ),

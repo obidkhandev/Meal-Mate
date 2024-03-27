@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
 import 'service/firebase_options.dart';
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   debugPrint(
