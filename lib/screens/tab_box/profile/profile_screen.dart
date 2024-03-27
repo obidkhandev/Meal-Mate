@@ -1,5 +1,8 @@
+import 'package:meal_mate/screens/push_notiications_screen.dart';
 import 'package:meal_mate/screens/tab_box/profile/local_notif_screen.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
+
+import '../../../data/model/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -123,6 +126,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => const LocalNotifScreen(),
+                          ),
+                        );
+                      }),
+                  ProfileGeneralItem(
+                      text: "Push  Notifications",
+                      onTap: () async {
+                          await context.read<AuthViewModel>().getData();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>  PushNotificationScreen(),
                           ),
                         );
                       }),

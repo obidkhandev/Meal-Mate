@@ -40,6 +40,7 @@ class LocalNotifScreen extends StatelessWidget {
                           .notifications[index];
                       return Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        margin: EdgeInsets.symmetric(vertical: 10.h),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10.r),

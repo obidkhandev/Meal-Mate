@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meal_mate/data/model/push_notification_model.dart';
 
+ const String appToken = "AAAA9U2QiIY:APA91bGVHsraUOGSzi4leEki3QJtxWsYjJTwuVJmPF_ytZE50G8B3SVmyic6nQks3bxgLHtV9hIzMG2b-S0QcJD3d2LBGBqjORo6H2PCypJay5vOjA1o0naj7O8JcygnBRpFCth4u5ZN";
+
 class ApiProvider {
   Future<Object> sendNotificationToUsers({
     String? topicName,
@@ -20,7 +22,7 @@ class ApiProvider {
         Uri.parse("https://fcm.googleapis.com/fcm/send"),
         headers: {
           "Authorization":
-          "key=AAAA9U2QiIY:APA91bFixAwqVHJyu-Zah-_ZfhKWT9gs1mlPLSwUydA70kNoDTudip698aW-CyD9L6o7Vj0LckbocCGQ2-GaA1ssuBC9qu5aA66VSgM3Cwtw5w07rAMQ1lCTK-o-und29vahJiQrX_o7",
+          "key=$appToken",
           "Content-Type": "application/json",
         },
         body: jsonEncode(

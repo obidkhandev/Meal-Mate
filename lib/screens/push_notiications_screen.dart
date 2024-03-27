@@ -1,9 +1,13 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:meal_mate/data/model/user_model.dart';
 import 'package:meal_mate/data/network_model/network_model.dart';
+import 'package:meal_mate/screens/tab_box/profile/local_notif_screen.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
+
 class PushNotificationScreen extends StatefulWidget {
-  const PushNotificationScreen({super.key});
+  // final List<UserModel>? allUsers;
+  const PushNotificationScreen({Key? key,}) : super(key: key);
 
   @override
   State<PushNotificationScreen> createState() => _PushNotificationScreenState();
@@ -12,19 +16,26 @@ class PushNotificationScreen extends StatefulWidget {
 class _PushNotificationScreenState extends State<PushNotificationScreen> {
   String fcmToken = "";
   int id = 1;
+  bool isSubscribe = true;
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
 
   void init() async {
     fcmToken = await FirebaseMessaging.instance.getToken() ?? "";
     debugPrint("FCM TOKEN:$fcmToken");
 
     final token = await FirebaseMessaging.instance.getAPNSToken();
-
     debugPrint("getAPNSToken : ${token.toString()}");
 
-    LocalNotificationService.localNotificationService;
-    //Foreground
+
+
+    // Foreground
     FirebaseMessaging.onMessage.listen(
-      (RemoteMessage remoteMessage) {
+          (RemoteMessage remoteMessage) {
         if (remoteMessage.notification != null) {
           LocalNotificationService().showNotification(
             body: remoteMessage.notification!.body!,
@@ -35,15 +46,16 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
           );
           id++;
 
-          debugPrint(
-              "FOREGROUND NOTIFICATION:${remoteMessage.notification!.title}");
+          debugPrint("FOREGROUND NOTIFICATION:${remoteMessage.notification!.title}");
         }
       },
     );
-    //Background
+
+    // Background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
       debugPrint("ON MESSAGE OPENED APP:${remoteMessage.notification!.title}");
     });
+
     // Terminated
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
@@ -52,23 +64,17 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
     });
   }
 
-  @override
-  void initState() {
-    init();
-    super.initState();
-  }
-
-  bool isSubscribe = false;
-
   TextEditingController titleController = TextEditingController();
   TextEditingController bodyController = TextEditingController();
 
   @override
   void dispose() {
-    bodyController.dispose();
     titleController.dispose();
+    bodyController.dispose();
     super.dispose();
   }
+
+  UserModel? activeUser;
 
   @override
   Widget build(BuildContext context) {
@@ -76,78 +82,97 @@ class _PushNotificationScreenState extends State<PushNotificationScreen> {
       appBar: AppBar(
         title: const Text("Discover Any News"),
       ),
-      body: Container(
+      body: context.watch<AuthViewModel>().isLoad? const Center(child: CircularProgressIndicator(),): Container(
         padding: const EdgeInsets.all(24),
         width: double.infinity,
         child: Column(
           children: [
             TextButton(
               onPressed: () {
-                isSubscribe == false
-                    ? FirebaseMessaging.instance.subscribeToTopic("news")
-                    : FirebaseMessaging.instance.unsubscribeFromTopic("news");
-                isSubscribe = !isSubscribe;
-                setState(() {});
-              },
-              child: Text(
-                isSubscribe == false ? "Subscribe" : "UnSubscribe",
-                style: AppTextStyle.recolateBlack.copyWith(
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            SizedBox(height: 30.h),
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(
-                hintText: "title",
-              ),
-            ),
-            SizedBox(height: 20.h),
-            TextField(
-              controller: bodyController,
-              decoration: const InputDecoration(
-                hintText: "body",
-              ),
-            ),
-            const Spacer(),
-            TextButton(
-              onPressed: () async {
-                if (isSubscribe) {
-                  Object messageId =
-                      await ApiProvider().sendNotificationToUsers(
-                    fcmToken: fcmToken,
-                    newText: titleController.text,
-                    newTitle: bodyController.text,
-                    title: titleController.text,
-                    body: bodyController.text,
-                  );
-                  debugPrint("MESSAGE ID:$messageId");
+                setState(() {
+                  isSubscribe = !isSubscribe;
+                });
+                if (!isSubscribe) {
+                  FirebaseMessaging.instance.subscribeToTopic("news");
                 } else {
-                  Object messageId =
-                      await ApiProvider().sendNotificationToUsers(
-                    newTitle: titleController.text,
-                    newText: bodyController.text,
-                    topicName: "news",
-                    title: titleController.text,
-                    body: bodyController.text,
-                  );
-                  debugPrint("MESSAGE ID:$messageId");
-                  context.read<NotificationViewModel>().addToNotification(
-                      NotificationModel(title: titleController.text, id: id));
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const PushNotificationScreen(),
-                    ),
-                  );
+                  FirebaseMessaging.instance.unsubscribeFromTopic("news");
                 }
               },
               child: Text(
+                isSubscribe ? "Unsubscribe" : "Subscribe",
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+
+            Center(
+              child: DropdownButton<UserModel>(
+                value: activeUser,
+                onChanged: (UserModel? value) {
+                  setState(() {
+                    activeUser = value;
+                  });
+                },
+                items: context.watch<AuthViewModel>().users?.map<DropdownMenuItem<UserModel>>((UserModel userModel) {
+                  return DropdownMenuItem<UserModel>(
+                    value: userModel,
+                    child: Text(userModel.email), // Assuming UserModel has a property 'email'
+                  );
+                }).toList() ?? [], // Use an empty list if users is null
+              ),
+            ),
+
+
+
+            Text( context.watch<AuthViewModel>().users!.first.userName),
+            SizedBox(height: 30),
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                hintText: "Title",
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: bodyController,
+              decoration: const InputDecoration(
+                hintText: "Body",
+              ),
+            ),
+
+            Spacer(),
+            TextButton(
+              onPressed: () async {
+                Object? messageId;
+                if (isSubscribe) {
+                  messageId = await ApiProvider().sendNotificationToUsers(
+                    fcmToken: activeUser!.fcmToken,
+                    newTitle: titleController.text,
+                    newText: bodyController.text,
+                    title: titleController.text,
+                    body: bodyController.text,
+                  );
+                } else {
+                  messageId = await ApiProvider().sendNotificationToUsers(
+                    topicName: "news",
+                    newTitle: titleController.text,
+                    newText: bodyController.text,
+                    title: titleController.text,
+                    body: bodyController.text,
+                  );
+                  print("${isSubscribe} Subscribe");
+                }
+
+                debugPrint("MESSAGE ID:$messageId");
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> LocalNotifScreen()));
+                context.read<NotificationViewModel>().addToNotification(
+                    NotificationModel(title: titleController.text, id: id));
+                id++;
+                titleController.clear();
+                bodyController.clear();
+              },
+              child: Text(
                 "SEND",
-                style: AppTextStyle.recolateMedium.copyWith(
-                  fontSize: 24,
-                ),
+                style: TextStyle(fontSize: 24),
               ),
             ),
           ],

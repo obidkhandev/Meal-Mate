@@ -25,9 +25,9 @@ class App extends StatelessWidget {
               darkTheme: dark,
               theme: light,
               debugShowCheckedModeBanner: false,
-              home: PushNotificationScreen(),
-              // initialRoute: RouteName.splash,
-              // onGenerateRoute: AppRoute.generateRoute,
+              // home: PushNotificationScreen(),
+              initialRoute: RouteName.splash,
+              onGenerateRoute: AppRoute.generateRoute,
             );
 
         },
