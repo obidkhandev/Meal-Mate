@@ -5,6 +5,8 @@ import 'service/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  LocalNotificationService.localNotificationService.init(navigatorKey);
 
   runApp(
     MultiProvider(providers: [

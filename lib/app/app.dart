@@ -10,8 +10,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-    LocalNotificationService.localNotificationService.init(navigatorKey);
+
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
