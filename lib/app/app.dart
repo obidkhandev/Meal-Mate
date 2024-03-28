@@ -1,3 +1,4 @@
+import 'package:meal_mate/google_map/ui/google_map.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 import '../screens/router/router.dart';
@@ -24,8 +25,9 @@ class App extends StatelessWidget {
               darkTheme: dark,
               theme: light,
               debugShowCheckedModeBanner: false,
-              initialRoute: RouteName.splash,
-              onGenerateRoute: AppRoute.generateRoute,
+              home: GoogleMapScreen(),
+              // initialRoute: RouteName.splash,
+              // onGenerateRoute: AppRoute.generateRoute,
             );
         },
 

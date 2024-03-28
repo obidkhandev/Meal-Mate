@@ -1,5 +1,7 @@
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
+import 'google_map/view_model/location_view_model.dart';
+import 'google_map/view_model/maps_view_model.dart';
 import 'service/firebase_options.dart';
 
 void main() async {
@@ -15,6 +17,8 @@ void main() async {
       ChangeNotifierProvider(create: (_)=>CategoryViewModel()),
       ChangeNotifierProvider(create: (_)=>StepsViewModel()),
       ChangeNotifierProvider(create: (_)=>NotificationViewModel()),
+      ChangeNotifierProvider(create: (_)=>MapsViewModel()),
+      ChangeNotifierProvider(create: (_)=>LocationViewModel()),
     ],
     child: const App(),
     )
