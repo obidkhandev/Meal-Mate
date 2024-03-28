@@ -1,11 +1,7 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../utils/tools/file_importer.dart';
 
 class AppPermissions {
-
    static requestLocationPermission(BuildContext context,Permission permission) async {
     PermissionStatus status = await permission.status;
 
@@ -21,15 +17,12 @@ class AppPermissions {
         showSnackBar(context, 'Something went wrong', Colors.red);
     }
   }
-
   static showSnackBar(BuildContext context, String text, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(text, textAlign: TextAlign.center),
       backgroundColor: color,
     ));
   }
-
-
 
   static getSomePermissions(BuildContext context,List<Permission> manyPermissions) async {
 

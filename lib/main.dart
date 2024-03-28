@@ -1,3 +1,4 @@
+import 'package:meal_mate/screens/add_screen/view_model/upload_file_view_model.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
 import 'service/firebase_options.dart';
@@ -17,6 +18,9 @@ void main() async {
       ChangeNotifierProvider(create: (_)=>CategoryViewModel()),
       ChangeNotifierProvider(create: (_)=>StepsViewModel()),
       ChangeNotifierProvider(create: (_)=>NotificationViewModel()),
+      ChangeNotifierProvider(create: (_)=>ImageViewModel()),
+
+
     ],
     child: const App(),
     )

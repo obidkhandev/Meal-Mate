@@ -1,109 +1,163 @@
+import 'package:meal_mate/screens/widget/add_tab_bar1.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
-class EditScreen extends StatefulWidget {
+import '../../../../add_screen/view_model/upload_file_view_model.dart';
+
+class EditScreenState extends StatefulWidget {
   final String docId;
 
-  const EditScreen({super.key, required this.docId});
+  const EditScreenState({Key? key, required this.docId}) : super(key: key);
 
   @override
-  State<EditScreen> createState() => _EditScreenState();
+  _EditScreenState createState() => _EditScreenState();
 }
 
-class _EditScreenState extends State<EditScreen> {
-  _fetchProductData() {
-    Future.microtask(() {
-      try {
-        context.read<ProductsViewModel>().getProductFromId(widget.docId);
-        FoodModel? foodModel = context.read<ProductsViewModel>().foodModel;
-        if (foodModel != null) {
-          context.read<ProductsViewModel>().foodModel = foodModel;
-        } else {
-          debugPrint("Update Error");
-        }
-      } catch (error) {
-        debugPrint("Update Error $error");
-      }
-    });
-  }
+class _EditScreenState extends State<EditScreenState> {
+
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late TextEditingController timeController;
+  late FoodModel? foodModel;
 
   @override
   void initState() {
     super.initState();
-    _fetchProductData();
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    timeController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchProductData();
+    });
   }
-
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController time = TextEditingController();
 
   @override
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
-    time.dispose();
+    timeController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          FoodModel? foodModel = context.read<ProductsViewModel>().foodModel;
-          context.read<ProductsViewModel>().updateProduct(
-              foodModel!.copWith(
+
+            var foodModel = context.read<ProductsViewModel>().foodModel;
+            if (foodModel != null) {
+              context.read<ProductsViewModel>().updateProduct(
+                foodModel.copWith(
                   foodDescription: descriptionController.text,
                   title: titleController.text,
-                  timestamp: time.text),
-              context);
-          // notification add
-          NotificationModel notifModel = NotificationModel(
-              title: titleController.text, id: DateTime.now().millisecond);
-          context.read<NotificationViewModel>().addToNotification(notifModel);
-          LocalNotificationService().showNotification(
-              notificationModel: notifModel,
-              body: "Muvvaqqiyatli o'zgartirildi");
+                  timestamp: timeController.text,
+                  imageUrl: context.read<ImageViewModel>().getImageUrl,
+                ),
+                context,
+              );
 
-          myAnimatedSnackBar(context, "Mufuvvaqqiyatli o'zgartirildi");
-          Navigator.pop(context);
+              var notifModel = NotificationModel(
+                title: titleController.text,
+                id: DateTime.now().millisecond,
+              );
+              context.read<NotificationViewModel>().addToNotification(notifModel);
+
+              LocalNotificationService().showNotification(
+                notificationModel: notifModel,
+                body: "Muvvaqqiyatli o'zgartirildi",
+              );
+
+              myAnimatedSnackBar(context, "Muvvaqqiyatli o'zgartirildi");
+              Navigator.pop(context);
+            }
+
         },
-        child: const Icon(Icons.save),
+        child: Icon(Icons.save),
       ),
-      body: context.read<ProductsViewModel>().foodModel == null
-          ? Center(child: Text("Empty"))
-          : Padding(
-              padding: EdgeInsets.all(16.0.h),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: titleController
-                      ..text =
-                          context.watch<ProductsViewModel>().foodModel!.title,
-                    decoration: const InputDecoration(
-                        hintText: "Title", border: UnderlineInputBorder()),
-                  ),
-                  TextField(
-                    controller: descriptionController
-                      ..text = context
-                          .watch<ProductsViewModel>()
-                          .foodModel!
-                          .foodDescription,
-                    decoration: const InputDecoration(
-                        hintText: "Description",
-                        border: UnderlineInputBorder()),
-                  ),
-                  TextField(
-                    controller: time
-                      ..text = context
-                          .watch<ProductsViewModel>()
-                          .foodModel!
-                          .timestamp,
-                    decoration: const InputDecoration(
-                        hintText: "Time", border: UnderlineInputBorder()),
-                  ),
-                ],
+      body: context.read<ProductsViewModel>().getLoader? Center(child: CircularProgressIndicator(),): Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(
+                hintText: "Title",
+                border: UnderlineInputBorder(),
               ),
             ),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(
+                hintText: "Description",
+                border: UnderlineInputBorder(),
+              ),
+            ),
+            TextField(
+              controller: timeController,
+              decoration: const InputDecoration(
+                hintText: "Time",
+                border: UnderlineInputBorder(),
+              ),
+            ),
+            if (foodModel != null) ...[
+              if (context.watch<ImageViewModel>().getLoader)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+             foodModel!.imageUrl.isEmpty
+                  ? ElevatedButton(
+                  onPressed: () {
+                    takeAnImage(context);
+                  },
+                  child: const Text("Upload Image"))
+                  : Container(
+                height: 200.h,
+                width: double.infinity,
+                alignment: Alignment.topRight,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(foodModel!.imageUrl),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    takeAnImage(context);
+                    setState(() {
+                      foodModel!.copWith(imageUrl: context.read<ImageViewModel>().getImageUrl);
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
+  }
+
+  Future<void> _fetchProductData() async {
+    try {
+      await context.read<ProductsViewModel>().getProductFromId(widget.docId);
+      FoodModel? fetchedFoodModel =
+          context.read<ProductsViewModel>().foodModel;
+      if (fetchedFoodModel != null) {
+        setState(() {
+          foodModel = fetchedFoodModel;
+          titleController.text = foodModel!.title;
+          descriptionController.text = foodModel!.foodDescription;
+          timeController.text = foodModel!.timestamp;
+        });
+      }
+    } catch (error) {
+      debugPrint("Update Error $error");
+    }
   }
 }

@@ -1,5 +1,6 @@
-import '../../data/model/category_model.dart';
+import 'package:meal_mate/screens/add_screen/view_model/upload_file_view_model.dart';
 import '../../utils/tools/file_importer.dart';
+
 
 class AddTabBar extends StatefulWidget {
   final TextEditingController titleController;
@@ -19,8 +20,9 @@ class AddTabBar extends StatefulWidget {
 }
 
 class _AddTabBarState extends State<AddTabBar> {
+  int activeIndex = 0;
+  // myImageUrl = '';
 
-  int activeIndex  = 0;
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -28,8 +30,10 @@ class _AddTabBarState extends State<AddTabBar> {
       children: [
         TextField(
           controller: widget.titleController,
-          decoration: InputDecoration(
-              hintText: "Title", border: UnderlineInputBorder()),
+          decoration: const InputDecoration(
+            hintText: "Title",
+            border: UnderlineInputBorder(),
+          ),
         ),
         SizedBox(height: 15.h),
         Text(
@@ -45,7 +49,7 @@ class _AddTabBarState extends State<AddTabBar> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: widget.hourController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: "hour", border: UnderlineInputBorder()),
               ),
             ),
@@ -56,35 +60,51 @@ class _AddTabBarState extends State<AddTabBar> {
                 keyboardType: TextInputType.number,
                 controller: widget.minuteController,
                 decoration: const InputDecoration(
-                    hintText: "minute", border: UnderlineInputBorder()),
+                  hintText: "minute",
+                  border: UnderlineInputBorder(),
+                ),
               ),
             ),
           ],
         ),
         SizedBox(height: 20.h),
-        Container(
-          height: 200.h,
-          width: double.infinity,
-          alignment: Alignment.topRight,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                  "https://i.pinimg.com/originals/20/63/25/206325d9203e6b3c5b79cfc5202ce046.jpg"),
-            ),
+        if (context.watch<ImageViewModel>().getLoader)
+          const Center(
+            child: CircularProgressIndicator(),
           ),
-          child: Icon(
-            Icons.edit,
-            color: Colors.black,
-          ),
-        ),
+        context.watch<ImageViewModel>().getImageUrl.isEmpty
+            ? ElevatedButton(
+                onPressed: () {
+                  takeAnImage(context);
+                },
+                child: const Text("Upload Image"))
+            : Container(
+                height: 200.h,
+                width: double.infinity,
+                alignment: Alignment.topRight,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(context.watch<ImageViewModel>().getImageUrl),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    takeAnImage(context);
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
         SizedBox(height: 20.h),
         TextField(
           controller: widget.descriptionController,
           maxLines: null,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: "description",
             border: UnderlineInputBorder(),
           ),
@@ -130,4 +150,43 @@ class _AddTabBarState extends State<AddTabBar> {
       ],
     );
   }
+
+
+}
+
+takeAnImage(BuildContext context) async {
+  showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          )),
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 12.h),
+            ListTile(
+              onTap: () async {
+
+                await context.read<ImageViewModel>().getImageFromGallery(context);
+                Navigator.pop(context);
+              },
+              leading: const Icon(Icons.photo_album_outlined),
+              title: const Text("Gallereyadan olish"),
+            ),
+            ListTile(
+              onTap: () async {
+
+                await context.read<ImageViewModel>().getImageFromCamera(context);
+                Navigator.pop(context);
+              },
+              leading: const Icon(Icons.camera_alt),
+              title: const Text("Kameradan olish"),
+            ),
+            SizedBox(height: 24.h),
+          ],
+        );
+      });
 }

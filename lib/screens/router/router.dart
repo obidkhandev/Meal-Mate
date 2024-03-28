@@ -1,5 +1,6 @@
 import 'package:meal_mate/screens/add_screen/add_screen.dart';
 import 'package:meal_mate/screens/detail/detail_screen.dart';
+import 'package:meal_mate/screens/tab_box/profile/user_posts/edit/edit_screen.dart';
 
 import '../../utils/tools/file_importer.dart';
 
@@ -23,7 +24,7 @@ class AppRoute {
       case RouteName.addRecipe:
         return navigate(const AddScreen());
         case RouteName.edit:
-        return navigate(EditScreen(docId: settings.arguments as String,));
+        return navigate(EditScreenState(docId: settings.arguments as String,));
       case RouteName.detail:
         return navigate(DetailScreen(uid: arg as String));
 

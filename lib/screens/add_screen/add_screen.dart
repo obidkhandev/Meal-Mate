@@ -1,3 +1,5 @@
+import 'package:meal_mate/screens/add_screen/view_model/upload_file_view_model.dart';
+
 import '../../utils/tools/file_importer.dart';
 import '../widget/add_tab_bar1.dart';
 
@@ -79,7 +81,7 @@ class _AddScreenState extends State<AddScreen> {
                           .stepsItem ??
                       [],
                   imageUrl:
-                      "https://i.pinimg.com/originals/20/63/25/206325d9203e6b3c5b79cfc5202ce046.jpg",
+                      context.read<ImageViewModel>().getImageUrl,
                   difficultly: "easy",
                   ingredientList:
                       Provider.of<IngredientViewModel>(context, listen: false)
