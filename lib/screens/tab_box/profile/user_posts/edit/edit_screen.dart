@@ -6,7 +6,7 @@ import '../../../../add_screen/view_model/upload_file_view_model.dart';
 class EditScreenState extends StatefulWidget {
   final String docId;
 
-  const EditScreenState({Key? key, required this.docId}) : super(key: key);
+  const EditScreenState({super.key, required this.docId});
 
   @override
   _EditScreenState createState() => _EditScreenState();
@@ -108,7 +108,7 @@ class _EditScreenState extends State<EditScreenState> {
              foodModel!.imageUrl.isEmpty
                   ? ElevatedButton(
                   onPressed: () {
-                    takeAnImage(context);
+                     takeAnImage(context);
                   },
                   child: const Text("Upload Image"))
                   : Container(

@@ -1,4 +1,5 @@
 import 'package:meal_mate/screens/add_screen/view_model/upload_file_view_model.dart';
+import 'package:meal_mate/screens/persmissions/helper/permissons.dart';
 
 import '../../utils/tools/file_importer.dart';
 import '../widget/add_tab_bar1.dart';
@@ -93,7 +94,7 @@ class _AddScreenState extends State<AddScreen> {
                 );
 
                 if (foodModel.categoryId.isNotEmpty && FoodModel.canAddToDB(foodModel)) {
-                  myAnimatedSnackBar(context, "Muvaffaqqiyatli qo'shildi");
+                  AppPermissions.showSnackBar(context, "Muvvaqqiyatli qo'shild", AppColors.primary);
                   NotificationModel notifModel = NotificationModel(
                       title: titleController.text,
                       id: DateTime.now().millisecond);
@@ -111,7 +112,7 @@ class _AddScreenState extends State<AddScreen> {
 
                   Navigator.pop(context);
                 } else {
-                  myAnimatedSnackBar(context, "Nimadur qolib ketdi");
+                  AppPermissions.showSnackBar(context, "Muvvaqqiyatli qo'shild", AppColors.primary);
                   debugPrint('Category ID is empty');
                 }
               },
