@@ -1,3 +1,5 @@
+import 'package:meal_mate/google_map/view_model/location_view_model.dart';
+import 'package:meal_mate/google_map/view_model/map_view_model.dart';
 import 'package:meal_mate/screens/add_screen/view_model/upload_file_view_model.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
@@ -19,6 +21,8 @@ void main() async {
       ChangeNotifierProvider(create: (_)=>StepsViewModel()),
       ChangeNotifierProvider(create: (_)=>NotificationViewModel()),
       ChangeNotifierProvider(create: (_)=>ImageViewModel()),
+      ChangeNotifierProvider(create: (_)=>MapsViewModel()),
+      ChangeNotifierProvider(create: (_)=>LocationViewModel()),
 
 
     ],
