@@ -17,7 +17,7 @@ class _EditScreenState extends State<EditScreenState> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late TextEditingController timeController;
-  late FoodModel? foodModel;
+  FoodModel? foodModel;
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _EditScreenState extends State<EditScreenState> {
     timeController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,7 @@ class _EditScreenState extends State<EditScreenState> {
         },
         child: Icon(Icons.save),
       ),
-      body: context.read<ProductsViewModel>().getLoader? Center(child: CircularProgressIndicator(),): Padding(
+      body:  context.watch<ProductsViewModel>().getLoader ? Center(child: CircularProgressIndicator(),): Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -100,18 +99,22 @@ class _EditScreenState extends State<EditScreenState> {
                 border: UnderlineInputBorder(),
               ),
             ),
-            if (foodModel != null) ...[
-              if (context.watch<ImageViewModel>().getLoader)
+
+            if(context.watch<ImageViewModel>().getLoader)
                 const Center(
                   child: CircularProgressIndicator(),
                 ),
+
              foodModel!.imageUrl.isEmpty
                   ? ElevatedButton(
                   onPressed: () {
                      takeAnImage(context);
                   },
                   child: const Text("Upload Image"))
-                  : Container(
+                  :
+             SizedBox(height: 20),
+
+             Container(
                 height: 200.h,
                 width: double.infinity,
                 alignment: Alignment.topRight,
@@ -126,9 +129,7 @@ class _EditScreenState extends State<EditScreenState> {
                 child: IconButton(
                   onPressed: () {
                     takeAnImage(context);
-                    setState(() {
-                      foodModel!.copWith(imageUrl: context.read<ImageViewModel>().getImageUrl);
-                    });
+                      foodModel?.imageUrl =  (context.watch<ImageViewModel>().getImageUrl) ?? '';
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -137,17 +138,19 @@ class _EditScreenState extends State<EditScreenState> {
                 ),
               ),
             ],
-          ],
+
         ),
       ),
     );
   }
 
-  Future<void> _fetchProductData() async {
+  void _fetchProductData() async {
+    Future.microtask(() {
+      return context.read<ProductsViewModel>().getProductFromId(widget.docId);
+    });
     try {
-      await context.read<ProductsViewModel>().getProductFromId(widget.docId);
       FoodModel? fetchedFoodModel =
-          context.read<ProductsViewModel>().foodModel;
+          context.watch<ProductsViewModel>().foodModel;
       if (fetchedFoodModel != null) {
         setState(() {
           foodModel = fetchedFoodModel;
@@ -155,9 +158,12 @@ class _EditScreenState extends State<EditScreenState> {
           descriptionController.text = foodModel!.foodDescription;
           timeController.text = foodModel!.timestamp;
         });
+      }else{
+        setState(() {});
       }
     } catch (error) {
       debugPrint("Update Error $error");
     }
+
   }
 }

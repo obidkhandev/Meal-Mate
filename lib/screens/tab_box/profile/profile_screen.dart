@@ -141,6 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileGeneralItem(
                 text: "My Posts",
                 onTap: () {
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -148,7 +149,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }),
             ProfileGeneralItem(
                 text: "Permissions",
-                onTap: () {
+                onTap: () async {
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

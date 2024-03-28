@@ -9,6 +9,7 @@ class ProductsViewModel extends ChangeNotifier {
   List<FoodModel> ownProducts = [];
 
 
+
   Future<void> getProductFromId(String productId) async {
     // Notify listeners that fetching is in progress
     _notify(true);

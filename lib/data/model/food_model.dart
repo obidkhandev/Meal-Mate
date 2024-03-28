@@ -2,7 +2,7 @@ class FoodModel {
   final String docId;
   final String foodDescription;
   final List<String> stepsList;
-  final String imageUrl;
+  late final String imageUrl;
   final String difficultly;
   final List<String> ingredientList;
   final String title;
