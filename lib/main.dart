@@ -23,6 +23,7 @@ void main() async {
       ChangeNotifierProvider(create: (_)=>ImageViewModel()),
       ChangeNotifierProvider(create: (_)=>MapsViewModel()),
       ChangeNotifierProvider(create: (_)=>LocationViewModel()),
+      // ChangeNotifierProvider(create: (_)=()),
 
 
     ],

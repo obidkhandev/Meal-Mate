@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
@@ -7,13 +6,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsViewModel extends ChangeNotifier {
   final Completer<GoogleMapController> controller =
-  Completer<GoogleMapController>();
+      Completer<GoogleMapController>();
 
   MapType mapType = MapType.normal;
-
   CameraPosition? initialCameraPosition;
   late CameraPosition currentCameraPosition;
-
+  String mapIcon = 'assets/icons/inital_map_icon.png';
   Set<Marker> markers = {};
 
   setLatInitialLong(LatLng latLng) {
@@ -24,6 +22,11 @@ class MapsViewModel extends ChangeNotifier {
 
     currentCameraPosition = initialCameraPosition!;
     // addNewMarker();
+  }
+
+  changeMapIcon(String iconPath) {
+    mapIcon = iconPath;
+    notifyListeners();
   }
 
   changeMapType(MapType newMapType) {
@@ -47,18 +50,21 @@ class MapsViewModel extends ChangeNotifier {
     currentCameraPosition = cameraPosition;
   }
 
-  addNewMarker() async {
-    markers = {};
-    // Uint8List markerImage = await getBytesFromAsset(
-    //  '',
-    //   150,
-    // );
+  addNewMarker({
+    required String lang,
+    required String lat,
+  }) async {
+    Uint8List markerImage = await getBytesFromAsset(
+      mapIcon,
+      50,
+    );
     markers.add(
       Marker(
         position: currentCameraPosition.target,
-        infoWindow: const InfoWindow(title: "Toshkent", snippet: "Chilonzor"),
-        //BitmapDescriptor.defaultMarker,
-        icon: BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(
+            title: lang,
+            snippet: lat),
+        icon: BitmapDescriptor.fromBytes(markerImage),
         markerId: MarkerId(DateTime.now().toString()),
       ),
     );

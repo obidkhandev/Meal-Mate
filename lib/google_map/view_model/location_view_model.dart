@@ -34,12 +34,9 @@ class LocationViewModel extends ChangeNotifier {
     }
 
     locationData = await location.getLocation();
+    // locationData.
     latLng = LatLng(locationData.latitude!, locationData.longitude!);
 
-    debugPrint("LONGITUDE:${locationData.longitude}");
-    debugPrint("LATITUDE:${locationData.latitude}");
-    debugPrint("SPEED:${locationData.speed}");
-    debugPrint("ALTITUDE:${locationData.altitude}");
 
     listenCurrentLocation();
 
@@ -48,10 +45,7 @@ class LocationViewModel extends ChangeNotifier {
 
   void listenCurrentLocation() {
     location.onLocationChanged.listen((LocationData locationData) {
-      debugPrint("LONGITUDE FROM STREAM:${locationData.longitude}");
-      debugPrint("LATITUDE FROM STREAM:${locationData.latitude}");
-      debugPrint("SPEED FROM STREAM:${locationData.speed}");
-      debugPrint("ALTITUDE FROM STREAM:${locationData.altitude}");
+
     });
   }
 }
