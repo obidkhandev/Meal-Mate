@@ -12,7 +12,14 @@ class MapsViewModel extends ChangeNotifier {
   CameraPosition? initialCameraPosition;
   late CameraPosition currentCameraPosition;
   String mapIcon = 'assets/icons/inital_map_icon.png';
+
   Set<Marker> markers = {};
+
+
+  clearMarkers(){
+    markers = {};
+    notifyListeners();
+  }
 
   setLatInitialLong(LatLng latLng) {
     initialCameraPosition = CameraPosition(
@@ -57,13 +64,15 @@ class MapsViewModel extends ChangeNotifier {
     Uint8List markerImage = await getBytesFromAsset(
       mapIcon,
       50,
+
     );
     markers.add(
       Marker(
         position: currentCameraPosition.target,
         infoWindow: InfoWindow(
             title: lang,
-            snippet: lat),
+            snippet: lat,
+        ),
         icon: BitmapDescriptor.fromBytes(markerImage),
         markerId: MarkerId(DateTime.now().toString()),
       ),

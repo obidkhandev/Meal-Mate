@@ -1,7 +1,4 @@
-import 'package:meal_mate/screens/tab_box/profile/notif_model.dart';
-import 'package:meal_mate/screens/tab_box/profile/notifc_view_model.dart';
-import 'package:meal_mate/service/local_notification_service.dart';
-import 'package:meal_mate/utils/tools/assistant.dart';
+import 'package:meal_mate/google_map/view_model/map_view_model.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class LocalNotifScreen extends StatelessWidget {
@@ -11,61 +8,65 @@ class LocalNotifScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Local Notification"),
+        title: const Text("Siz borgan joylar"),
         actions: [
-          TextButton(onPressed: (){
-            context.read<NotificationViewModel>().removeAll();
-            myAnimatedSnackBar(context, "Local notifications remove all");
-          }, child: Text("Clear All")),
+          TextButton(
+            onPressed: () {
+              context.read<MapsViewModel>().clearMarkers();
+              context.read<NotificationViewModel>().removeAll();
+              Navigator.pop(context);
+              },
+            child: const Text("Clear all place"),
+          ),
         ],
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         children: [
           context.watch<NotificationViewModel>().notifications.isEmpty
-              ?  Center(
-            heightFactor: height(context) / 30,
-                  child: Text("Siz hali notification qabul qilmadingiz"),
+              ? Center(
+                  heightFactor: height(context) / 30,
+                  child: const Text("Siz hali hech qayerga bormadingiz"),
                 )
-              : Consumer<NotificationViewModel>(builder: (context,viewModel,child){
-                return SizedBox(
-                  height: 700.h,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    itemCount:viewModel
-                        .notifications
-                        .length,
-                    itemBuilder: (context, index) {
-                      NotificationModel notifModel = viewModel
-                          .notifications[index];
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: Colors.grey.shade200)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(notifModel.title),
-                            IconButton(
-                              onPressed: () {
-                                LocalNotificationService().cancelNotification(notifModel.id);
-                                viewModel.removeFromList(notifModel);
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-          })
+              : Consumer<NotificationViewModel>(
+                  builder: (context, viewModel, child) {
+                  return SizedBox(
+                    height: 700.h,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      itemCount: viewModel.notifications.length,
+                      itemBuilder: (context, index) {
+                        NotificationModel notifModel =
+                            viewModel.notifications[index];
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          margin: EdgeInsets.symmetric(vertical: 10.w),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(color: Colors.grey.shade200)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(notifModel.title),
+                              IconButton(
+                                onPressed: () {
+                                  LocalNotificationService()
+                                      .cancelNotification(notifModel.id);
+                                  viewModel.removeFromList(notifModel);
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                })
         ],
       ),
     );

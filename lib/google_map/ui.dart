@@ -2,6 +2,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate/google_map/view_model/map_view_model.dart';
 import 'package:meal_mate/google_map/widget/my_tab_item.dart';
 import 'package:meal_mate/google_map/widget/show_modal_bottom_sheet.dart';
+import 'package:meal_mate/screens/tab_box/profile/local_notif_screen.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 class GoogleMapsScreen extends StatefulWidget {
@@ -51,8 +52,11 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                           lang: titleController.text,
                           lat: bodyController.text,
                         );
-                    titleController.clear();
-                    bodyController.clear();
+                    context.read<NotificationViewModel>().addToNotification(
+                        NotificationModel(
+                            title: titleController.text,
+                            id: DateTime.now().millisecond,
+                            body: cameraPosition!.target.toString(),));
                   }
 
                   LocalNotificationService().showNotification(
@@ -76,40 +80,70 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                   child: Icon(
                 Icons.location_on,
                 color: Colors.red,
-                size: 26,
+                size: 32,
               ))
             ],
           );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
+      floatingActionButton: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FloatingActionButton(
-            backgroundColor: Colors.white,
-            onPressed: () {
-              context.read<MapsViewModel>().moveToInitialPosition();
-              setState(() {
-                isMyLocation = true;
-              });
-            },
-            child: Icon(
-              isMyLocation ? Icons.my_location : Icons.location_searching,
-              color: Colors.lightBlueAccent,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingActionButton(
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  context.read<MapsViewModel>().moveToInitialPosition();
+                  setState(() {
+                    isMyLocation = true;
+                  });
+                },
+                child: Icon(
+                  isMyLocation ? Icons.my_location : Icons.location_searching,
+                  color: Colors.lightBlueAccent,
+                ),
+              ),
+              SizedBox(height: 10.h),
+              const MapTypeItem(),
+              SizedBox(height: 10.h),
+              MapCategoryItem(
+                myShowModalBottomSheet: MyBottomSheetWidget(
+                    titleController: titleController,
+                    bodyController: bodyController),
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LocalNotifScreen(),
+                      ),
+                    );
+                  },
+                  child: const Icon(
+                    Icons.forward,
+                    color: Colors.redAccent,
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 10.h),
-          const MapTypeItem(),
-          SizedBox(height: 10.h),
-          MapCategoryItem(
-            myShowModalBottomSheet: MyBottomSheetWidget(titleController: titleController, bodyController: bodyController),
-          ),
-          SizedBox(height: 20.h),
         ],
       ),
     );
   }
 }
-
-
