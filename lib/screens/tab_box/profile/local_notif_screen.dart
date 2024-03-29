@@ -48,7 +48,16 @@ class LocalNotifScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(notifModel.title),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(notifModel.title),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                      width: 200.w,
+                                      child: Text(notifModel.body,overflow: TextOverflow.ellipsis,)),
+                                ],
+                              ),
                               IconButton(
                                 onPressed: () {
                                   LocalNotificationService()

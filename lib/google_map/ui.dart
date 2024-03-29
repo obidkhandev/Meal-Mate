@@ -52,11 +52,14 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                           lang: titleController.text,
                           lat: bodyController.text,
                         );
+                    titleController.clear();
+                    bodyController.clear();
                     context.read<NotificationViewModel>().addToNotification(
                         NotificationModel(
                             title: titleController.text,
                             id: DateTime.now().millisecond,
-                            body: cameraPosition!.target.toString(),));
+                            body: cameraPosition!.target.toString(),),
+                    );
                   }
 
                   LocalNotificationService().showNotification(
