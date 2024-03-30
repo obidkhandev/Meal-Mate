@@ -60,7 +60,7 @@ class LocalDatabase {
        ${PlaceModelConstants.placeCategory} $textType,
       ${PlaceModelConstants.placeName} $textType,
       ${PlaceModelConstants.lat} $textType,
-      ${PlaceModelConstants.long} ,
+      ${PlaceModelConstants.long} $textType,
       ${PlaceModelConstants.entrance} $textType2,
       ${PlaceModelConstants.flatNumber} $textType2,
       ${PlaceModelConstants.orientAddress} $textType2,

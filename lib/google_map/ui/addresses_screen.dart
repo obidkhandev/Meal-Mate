@@ -27,7 +27,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
             child: Consumer<AddressesViewModel>(
               builder: (context, viewModel, child) {
                 return viewModel.getLoader
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
                     : ListView(children: [
@@ -89,7 +89,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                         children: [
                                           TextSpan(
                                             text: "${myAddress.placeCategory}\n",
-                                            style: AppTextStyle.recolateMedium
+                                            style: AppTextStyle.recolateBold
                                                 .copyWith(
                                               fontSize: 18,
                                             ),
@@ -98,7 +98,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                             text: placeName,
                                             style: AppTextStyle.recolateMedium
                                                 .copyWith(
-                                              fontSize: 18,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w300
                                             ),
                                           ),
                                         ],
@@ -114,18 +115,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
               },
             ),
           ),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return GoogleMapsScreen();
-                    },
-                  ),
-                );
-              },
-              child: Text("Yangi address qo'shish"))
+          Container(
+            height: 56.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: const Text("Add new address"),
+          ),
         ],
       ),
     );

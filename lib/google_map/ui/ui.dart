@@ -43,8 +43,6 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                 },
                 onCameraMove: (CameraPosition currentCameraPosition) {
                   cameraPosition = currentCameraPosition;
-                  debugPrint(
-                      "CURRENT POSITION:${currentCameraPosition.target.longitude}");
                 },
                 mapType: viewModel.mapType,
                 initialCameraPosition: viewModel.initialCameraPosition,
@@ -133,7 +131,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                                       ? context.read<LocationViewModel>().latLng!.longitude
                                       : cameraPosition!.target.longitude,
                                   currentPlaceName:
-                                      context.read<MapsViewModel>().currentPlaceName,
+                                      context.read<MapsViewModel>().currentPlaceName, titleName: 'Add Location',
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
                                   content:  Text(
