@@ -44,7 +44,7 @@ class MapsViewModel extends ChangeNotifier {
   moveToInitialPosition() async {
     final GoogleMapController mapController = await controller.future;
     await mapController
-        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition!));
+        .animateCamera(CameraUpdate.newCameraPosition(initialCameraPosition));
   }
 
   changeCurrentCameraPosition(CameraPosition cameraPosition) async {

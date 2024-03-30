@@ -97,5 +97,11 @@ class LocalDatabase {
   }
 
 
+  static Future<void> deleteAllProducts() async {
+    // Get a reference to the database.
+    final db = await databaseInstance.database; // Assuming you have a function called `database` that opens the SQLite database.
+
+    await  db.rawDelete('DELETE FROM ${MyAppConstants.placeTableName}');
+  }
 
 }

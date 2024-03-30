@@ -32,7 +32,12 @@ class AddressesViewModel extends ChangeNotifier {
     getAllPlace();
     _notify(false);
   }
-  deleteAddress(){}
+  deleteAddress()async {
+    _notify(true);
+    await LocalDatabase.deleteAllProducts();
+    getAllPlace();
+    _notify(false);
+  }
 
 
   _notify(bool v) {

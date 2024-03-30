@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meal_mate/google_map/view_model/location_view_model.dart';
 import 'package:meal_mate/google_map/widget/dialogs.dart';
-import 'package:meal_mate/utils/tools/assistant.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
-import 'package:provider/provider.dart';
 import '../../data/model/place_category.dart';
 import '../../data/model/place_model.dart';
 import '../view_model/addresses_view_model.dart';
@@ -63,12 +59,16 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                 left: 0,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Text(
-                    viewModel.currentPlaceName,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.recolateMedium.copyWith(
-                      fontSize: 24,
-                      color: MapType.values[0] == MapType.normal ? Colors.black : Colors.white,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      viewModel.currentPlaceName,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.recolateBold
+                          .copyWith(fontSize: 24, color: Colors.black),
                     ),
                   ),
                 ),
@@ -97,62 +97,86 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                             iconData: iconsCategory[index],
                             backgroundColor: buttonActiveIndex == index
                                 ? AppColors.primary
-                                : Colors.white, mainColor: buttonActiveIndex == index? Colors.white : Colors.black,
+                                : Colors.white,
+                            mainColor: buttonActiveIndex == index
+                                ? Colors.white
+                                : Colors.black,
                           );
                         },
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                            addressDetailDialog(
-                                  context: context,
-                                  placeModel: (newAddressDetails) {
-                                    PlaceModel place = newAddressDetails;
-                                    place = place.copyWith(
-                                      placeName: context.read<MapsViewModel>().currentPlaceName,
-                                        placeCategory: place.placeCategory,
-                                        orientAddress: place.orientAddress.isEmpty? "ff" : place.orientAddress,
-                                        long: place.long,
-                                        lat: place.lat,
-                                      entrance: place.entrance.isEmpty? "hech narsa" : place.entrance,
-                                      flatNumber: place.flatNumber.isEmpty? 'hech narsa':place.flatNumber,
-                                      stage: place.stage.isEmpty? 'hech narsa' : place.stage,
-
-                                    );
-                                    context.read<AddressesViewModel>().addNewAddress(place);
-                                    context.read<AddressesViewModel>().getAllPlace();
-                                    Navigator.pop(context);
-                                  },
-                                  placeCategory: PlaceCategory.values[buttonActiveIndex].name,
-                                  lat: cameraPosition == null
-                                      ? context.read<LocationViewModel>().latLng!.latitude
-                                      : cameraPosition!.target.latitude,
-                                  long: cameraPosition == null
-                                      ? context.read<LocationViewModel>().latLng!.longitude
-                                      : cameraPosition!.target.longitude,
-                                  currentPlaceName:
-                                      context.read<MapsViewModel>().currentPlaceName, titleName: 'Add Location',
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                                  content:  Text(
-                                    'Add place successfully',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  backgroundColor: AppColors.primary,
-                                ));
-
-                              
+                      onTap: () {
+                        addressDetailDialog(
+                          context: context,
+                          placeModel: (newAddressDetails) {
+                            PlaceModel place = newAddressDetails;
+                            place = place.copyWith(
+                              placeName: context
+                                  .read<MapsViewModel>()
+                                  .currentPlaceName,
+                              placeCategory: place.placeCategory,
+                              orientAddress: place.orientAddress.isEmpty
+                                  ? "hech narsa yo'q"
+                                  : place.orientAddress,
+                              long: place.long,
+                              lat: place.lat,
+                              entrance: place.entrance.isEmpty
+                                  ? "hech narsa"
+                                  : place.entrance,
+                              flatNumber: place.flatNumber.isEmpty
+                                  ? 'hech narsa'
+                                  : place.flatNumber,
+                              stage: place.stage.isEmpty
+                                  ? 'hech narsa'
+                                  : place.stage,
+                            );
+                            context
+                                .read<AddressesViewModel>()
+                                .addNewAddress(place);
+                            context.read<AddressesViewModel>().getAllPlace();
+                            Navigator.pop(context);
+                          },
+                          placeCategory:
+                              PlaceCategory.values[buttonActiveIndex].name,
+                          lat: cameraPosition == null
+                              ? context
+                                  .read<LocationViewModel>()
+                                  .latLng!
+                                  .latitude
+                              : cameraPosition!.target.latitude,
+                          long: cameraPosition == null
+                              ? context
+                                  .read<LocationViewModel>()
+                                  .latLng!
+                                  .longitude
+                              : cameraPosition!.target.longitude,
+                          currentPlaceName:
+                              context.read<MapsViewModel>().currentPlaceName,
+                          titleName: 'Add Location',
+                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            'Add place successfully',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: AppColors.primary,
+                        ));
                       },
                       child: Container(
-                        margin: const EdgeInsets.only(right: 15,left: 15,top: 20),
+                        margin:
+                            const EdgeInsets.only(right: 15, left: 15, top: 20),
                         height: 56,
                         alignment: Alignment.center,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(10)
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Text(
+                          "Save Location",
+                          style: TextStyle(fontSize: 22, color: Colors.white),
                         ),
-                        child: const Text("Save Location",style: TextStyle(fontSize: 22,color: Colors.white),),
                       ),
                     ),
                   ],
@@ -170,33 +194,13 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
               ),
               Positioned(
                 right: 0,
-                top: height(context)/2 + 66,
-                child:  MapTypeItem(),),
+                top: height(context) / 2 + 66,
+                child: const MapTypeItem(),
+              ),
             ],
           );
         },
       ),
-
-  // floatingActionButton:
-      // floatingActionButton: Row(
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-      //     FloatingActionButton(
-      //       onPressed: () {
-      //         context.read<MapsViewModel>().moveToInitialPosition();
-      //       },
-      //       child: const Icon(Icons.gps_fixed),
-      //     ),
-      //     const SizedBox(width: 20),
-      //     // FloatingActionButton(
-      //     //   onPressed: () {
-      //     
-      //     //   child: const Icon(Icons.place),
-      //     // ),
-      //     const SizedBox(width: 20),
-      //     const
-      //   ],
-      // ),
     );
   }
 }
@@ -207,12 +211,14 @@ class MyElevatedButton extends StatelessWidget {
   final IconData iconData;
   final Color backgroundColor;
   final Color mainColor;
+
   const MyElevatedButton(
       {super.key,
       required this.onTap,
       required this.name,
       required this.iconData,
-      required this.backgroundColor, required this.mainColor});
+      required this.backgroundColor,
+      required this.mainColor});
 
   @override
   Widget build(BuildContext context) {
@@ -220,22 +226,24 @@ class MyElevatedButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor,
-            shadowColor: Colors.grey,
+          backgroundColor: backgroundColor,
+          shadowColor: Colors.grey,
         ),
         onPressed: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(iconData,color: mainColor,),
+            Icon(
+              iconData,
+              color: mainColor,
+            ),
             Text(
               name,
-              style: TextStyle(fontSize: 16,color: mainColor),
+              style: TextStyle(fontSize: 16, color: mainColor),
             ),
           ],
         ),
       ),
     );
-    ;
   }
 }

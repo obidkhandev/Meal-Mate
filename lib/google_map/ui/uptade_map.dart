@@ -146,23 +146,20 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                                 placeName: place.placeName,
                                 flatNumber: place.flatNumber,
                                 id: widget.placeModel.id);
+
                             context
                                 .read<AddressesViewModel>()
                                 .updatePlace(place);
+
                             Navigator.pop(context);
                           },
                           placeCategory: PlaceCategory.values[buttonActiveIndex].name,
                           lat: cameraPosition == null
-                              ? context
-                                  .read<LocationViewModel>()
-                                  .latLng!
-                                  .latitude
+                              ? widget.placeModel.lat
                               : cameraPosition!.target.latitude,
                           long: cameraPosition == null
-                              ? context
-                                  .read<LocationViewModel>()
-                                  .latLng!
-                                  .longitude
+                              ?
+                          widget.placeModel.long
                               : cameraPosition!.target.longitude,
                           currentPlaceName:
                               context.read<MapsViewModel>().currentPlaceName,

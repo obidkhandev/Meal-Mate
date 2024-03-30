@@ -26,8 +26,8 @@ class PlaceModel {
   factory PlaceModel.fromJson(Map<String, dynamic> json) => PlaceModel(
     id: json[PlaceModelConstants.id],
     placeCategory: json[PlaceModelConstants.placeCategory] as String,
-    lat: double.parse( json[PlaceModelConstants.lat]),
-    long: double.parse( json[PlaceModelConstants.long]),
+    lat: double.parse(json[PlaceModelConstants.lat]),
+    long: double.parse(json[PlaceModelConstants.long]),
     placeName: json[PlaceModelConstants.placeName] as String ?? '',
     entrance: json[PlaceModelConstants.entrance] as String ?? '',
     stage: json[PlaceModelConstants.stage] as String ?? '',
