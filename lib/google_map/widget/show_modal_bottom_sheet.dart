@@ -4,9 +4,9 @@ class MyBottomSheetWidget extends StatelessWidget {
   const MyBottomSheetWidget({
     super.key,
     required this.titleController,
-    required this.bodyController,
+    required this.bodyController, required this.onTap,
   });
-
+  final Function() onTap;
   final TextEditingController titleController;
   final TextEditingController bodyController;
 
@@ -37,9 +37,7 @@ class MyBottomSheetWidget extends StatelessWidget {
           ),
           SizedBox(height: 30.h),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: onTap,
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent),
             child: Text(

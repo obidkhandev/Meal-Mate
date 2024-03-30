@@ -12,7 +12,7 @@ class LocalNotifScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              context.read<MapsViewModel>().clearMarkers();
+
               context.read<NotificationViewModel>().removeAll();
               Navigator.pop(context);
               },

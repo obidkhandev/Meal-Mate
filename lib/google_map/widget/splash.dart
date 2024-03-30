@@ -1,40 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:meal_mate/google_map/ui.dart';
+import 'package:meal_mate/google_map/ui/addresses_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../view_model/location_view_model.dart';
+import '../../data/api_provider/api_provider.dart';
+import '../../utils/colors/app_colors.dart';
 import '../view_model/map_view_model.dart';
 
-class MySplashScreen extends StatelessWidget {
+class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
 
   @override
+  State<MySplashScreen> createState() => _MySplashScreenState();
+}
+
+class _MySplashScreenState extends State<MySplashScreen> {
+  _init() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return AddressesScreen();
+        },
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.read<LocationViewModel>();
+    context.read<MapsViewModel>();
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: Text("Splash Screen"),
+        title: Text("Deafult"),
       ),
       body: Center(
         child: TextButton(
-          onPressed: () {
-            LatLng? latLng = context.read<LocationViewModel>().latLng;
-            if (latLng != null) {
-              Provider.of<MapsViewModel>(context, listen: false)
-                  .setLatInitialLong(latLng);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return GoogleMapsScreen();
-                  },
-                ),
-              );
-            }
-          },
-          child: Text("GOOGLE MAPS OYNASI"),
+          onPressed: () {},
+          child: Text("LoTTIE QO"),
         ),
       ),
     );

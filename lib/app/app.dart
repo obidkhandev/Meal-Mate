@@ -1,7 +1,7 @@
 import 'package:meal_mate/google_map/widget/splash.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
-import '../google_map/ui.dart';
+import '../google_map/ui/ui.dart';
 import '../screens/router/router.dart';
 
 
@@ -25,7 +25,7 @@ class App extends StatelessWidget {
               darkTheme: dark,
               theme: light,
               debugShowCheckedModeBanner: false,
-              home: MySplashScreen(),
+              home: const MySplashScreen(),
             );
         },
 

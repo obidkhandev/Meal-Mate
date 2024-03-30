@@ -34,18 +34,12 @@ class LocationViewModel extends ChangeNotifier {
     }
 
     locationData = await location.getLocation();
-    // locationData.
     latLng = LatLng(locationData.latitude!, locationData.longitude!);
-
-
-    listenCurrentLocation();
-
-    location.enableBackgroundMode(enable: true);
+    
   }
 
   void listenCurrentLocation() {
     location.onLocationChanged.listen((LocationData locationData) {
-
     });
   }
 }
