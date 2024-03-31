@@ -64,7 +64,6 @@ class MapsViewModel extends ChangeNotifier {
     markers = {};
 
     Uint8List? markerImage;
-
     switch (placeModel.placeCategory) {
       case PlaceCategory.work:
         markerImage = await getBytesFromAsset(

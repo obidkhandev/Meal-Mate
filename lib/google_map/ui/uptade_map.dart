@@ -10,6 +10,7 @@ import '../../utils/colors/app_colors.dart';
 import '../../utils/style/app_text_style.dart';
 import '../../utils/tools/assistant.dart';
 import '../view_model/addresses_view_model.dart';
+import '../view_model/adressesViewModel.dart';
 import '../view_model/location_view_model.dart';
 import '../view_model/map_view_model.dart';
 import '../widget/dialogs.dart';
@@ -50,6 +51,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
           return Stack(
             children: [
               GoogleMap(
+                zoomControlsEnabled: false,
                 markers: viewModel.markers,
                 onCameraIdle: () {
                   if (cameraPosition != null) {
@@ -62,10 +64,10 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                   cameraPosition = currentCameraPosition;
                 },
                 mapType: viewModel.mapType,
-                initialCameraPosition: viewModel.initialCameraPosition!,
-                onMapCreated: (GoogleMapController createdController) {
-                  viewModel.controller.complete(createdController);
-                },
+                initialCameraPosition: viewModel.initialCameraPosition,
+                // onMapCreated: (GoogleMapController createdController) {
+                //   viewModel.controller.complete(createdController);
+                // },
               ),
               Align(
                 child: Image.asset(
@@ -86,7 +88,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      viewModel.currentPlaceName,
+                      viewModel.currentPlaceName.substring(0,viewModel.currentPlaceName.length),
                       textAlign: TextAlign.center,
                       style: AppTextStyle.recolateBold
                           .copyWith(fontSize: 24, color: Colors.black),
@@ -133,24 +135,24 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                           placeModel: (newAddressDetails) {
                             PlaceModel place = newAddressDetails;
                             place = place.copyWith(
-                                placeCategory:  PlaceCategory.values[buttonActiveIndex].name,
-                                orientAddress: place.orientAddress,
-                                lat: cameraPosition == null
-                                    ? place.lat
-                                    : cameraPosition!.target.latitude,
-                                long: cameraPosition == null
-                                    ? place.long
-                                    : cameraPosition!.target.longitude,
-                                entrance: place.entrance,
-                                stage: place.stage,
-                                placeName: place.placeName,
-                                flatNumber: place.flatNumber,
-                                id: widget.placeModel.id);
-
+                              placeCategory: PlaceCategory.values[buttonActiveIndex].name,
+                              orientAddress: place.orientAddress,
+                              lat: cameraPosition == null
+                                  ? place.lat
+                                  : cameraPosition!.target.latitude,
+                              long: cameraPosition == null
+                                  ? place.long
+                                  : cameraPosition!.target.longitude,
+                              entrance: place.entrance,
+                              stage: place.stage,
+                              placeName: place.placeName,
+                              flatNumber: place.flatNumber,
+                              docId: widget.placeModel.docId,
+                            );
+                            print(widget.placeModel.docId);
                             context
-                                .read<AddressesViewModel>()
-                                .updatePlace(place);
-
+                                .read<AddressesViewModel2>()
+                                .updatePlaceWithId(widget.placeModel.docId!, place);
                             Navigator.pop(context);
                           },
                           placeCategory: PlaceCategory.values[buttonActiveIndex].name,
@@ -158,21 +160,12 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                               ? widget.placeModel.lat
                               : cameraPosition!.target.latitude,
                           long: cameraPosition == null
-                              ?
-                          widget.placeModel.long
+                              ? widget.placeModel.long
                               : cameraPosition!.target.longitude,
                           currentPlaceName:
-                              context.read<MapsViewModel>().currentPlaceName,
+                          context.read<MapsViewModel>().currentPlaceName,
                           titleName: 'Update Location',
                         );
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            'Update place successfully',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: AppColors.primary,
-                        ));
                       },
                       child: Container(
                         margin:

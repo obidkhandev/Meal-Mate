@@ -1,8 +1,8 @@
 
 import 'package:flutter/foundation.dart';
-
 import '../../data/local/local_db.dart';
 import '../../data/model/place_model.dart';
+
 
 class AddressesViewModel extends ChangeNotifier {
   AddressesViewModel() {

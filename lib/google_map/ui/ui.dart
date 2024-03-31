@@ -1,17 +1,18 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:meal_mate/data/model/place_category.dart';
 import 'package:meal_mate/google_map/view_model/location_view_model.dart';
 import 'package:meal_mate/google_map/widget/dialogs.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
-import '../../data/model/place_category.dart';
 import '../../data/model/place_model.dart';
 import '../view_model/addresses_view_model.dart';
+import '../view_model/adressesViewModel.dart';
 import '../view_model/map_view_model.dart';
 import '../widget/my_tab_item.dart';
 
 class GoogleMapsScreen extends StatefulWidget {
-  const GoogleMapsScreen({
-    super.key,
-  });
+  const GoogleMapsScreen({Key? key});
 
   @override
   State<GoogleMapsScreen> createState() => _GoogleMapsScreenState();
@@ -22,6 +23,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     CameraPosition? cameraPosition;
     return Scaffold(
       body: Consumer<MapsViewModel>(
@@ -29,6 +31,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
           return Stack(
             children: [
               GoogleMap(
+                zoomControlsEnabled: false,
                 markers: viewModel.markers,
                 onCameraIdle: () {
                   if (cameraPosition != null) {
@@ -74,10 +77,10 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                 ),
               ),
               Positioned(
-                bottom: 10,
+                bottom: 15,
                 left: 0,
                 right: 0,
-                top: height(context) * 0.8,
+                top: height(context) * 0.78,
                 child: Column(
                   children: [
                     SizedBox(
@@ -108,71 +111,40 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
                     GestureDetector(
                       onTap: () {
                         addressDetailDialog(
+                          placeCategory: PlaceCategory.values[buttonActiveIndex].name,
+                          lat: cameraPosition!.target.latitude ,
+                          long: cameraPosition!.target.longitude,
+                          currentPlaceName: viewModel.currentPlaceName,
+                          titleName: 'Add Location',
                           context: context,
                           placeModel: (newAddressDetails) {
-                            PlaceModel place = newAddressDetails;
-                            place = place.copyWith(
-                              placeName: context
-                                  .read<MapsViewModel>()
-                                  .currentPlaceName,
-                              placeCategory: place.placeCategory,
-                              orientAddress: place.orientAddress.isEmpty
-                                  ? "hech narsa yo'q"
-                                  : place.orientAddress,
-                              long: place.long,
-                              lat: place.lat,
-                              entrance: place.entrance.isEmpty
-                                  ? "hech narsa"
-                                  : place.entrance,
-                              flatNumber: place.flatNumber.isEmpty
-                                  ? 'hech narsa'
-                                  : place.flatNumber,
-                              stage: place.stage.isEmpty
-                                  ? 'hech narsa'
-                                  : place.stage,
+                            PlaceModel place = newAddressDetails.copyWith(
+                              placeName: viewModel.currentPlaceName,
+                              placeCategory: PlaceCategory.values[buttonActiveIndex].name,
                             );
-                            context
-                                .read<AddressesViewModel>()
-                                .addNewAddress(place);
-                            context.read<AddressesViewModel>().getAllPlace();
+                            context.read<AddressesViewModel2>().insertProducts(place);
                             Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Place added successfully',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: AppColors.primary,
+                              ),
+                            );
                           },
-                          placeCategory:
-                              PlaceCategory.values[buttonActiveIndex].name,
-                          lat: cameraPosition == null
-                              ? context
-                                  .read<LocationViewModel>()
-                                  .latLng!
-                                  .latitude
-                              : cameraPosition!.target.latitude,
-                          long: cameraPosition == null
-                              ? context
-                                  .read<LocationViewModel>()
-                                  .latLng!
-                                  .longitude
-                              : cameraPosition!.target.longitude,
-                          currentPlaceName:
-                              context.read<MapsViewModel>().currentPlaceName,
-                          titleName: 'Add Location',
                         );
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            'Add place successfully',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: AppColors.primary,
-                        ));
                       },
                       child: Container(
-                        margin:
-                            const EdgeInsets.only(right: 15, left: 15, top: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                         height: 56,
-                        alignment: Alignment.center,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(10)),
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
                         child: const Text(
                           "Save Location",
                           style: TextStyle(fontSize: 22, color: Colors.white),
@@ -212,13 +184,14 @@ class MyElevatedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color mainColor;
 
-  const MyElevatedButton(
-      {super.key,
-      required this.onTap,
-      required this.name,
-      required this.iconData,
-      required this.backgroundColor,
-      required this.mainColor});
+  const MyElevatedButton({
+    Key? key,
+    required this.onTap,
+    required this.name,
+    required this.iconData,
+    required this.backgroundColor,
+    required this.mainColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

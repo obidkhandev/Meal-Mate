@@ -73,7 +73,7 @@ class LocalDatabase {
     int savedTaskID =
     await db.insert(MyAppConstants.placeTableName, placeModel.toJson());
     debugPrint(savedTaskID.toString());
-    return placeModel.copyWith(id: savedTaskID);
+    return placeModel;
   }
 
   static Future<List<PlaceModel>> getAllItems() async {
@@ -90,10 +90,10 @@ class LocalDatabase {
       MyAppConstants.placeTableName,
       place.toJson(), // Convert the PlaceModel to a map
       where: '${PlaceModelConstants.id} = ?',
-      whereArgs: [place.id],
+      // whereArgs: [place.id],
     );
     debugPrint("Update successfully");
-    debugPrint(place.id.toString());
+    // debugPrint(place.id.toString());
   }
 
 

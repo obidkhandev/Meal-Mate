@@ -35,11 +35,10 @@ addressDetailDialog({
       builder: (context) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-          child: Container(
+          child: SizedBox(
             height: 500.h,
             width: double.infinity,
             child: Column(
-
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Adress to delivery", style: AppTextStyle.recolateMedium),
@@ -103,7 +102,6 @@ addressDetailDialog({
                          long: long,
                           placeName: addressController.text,
                           stage: stageController.text,
-
                         ),
                       );
                       Navigator.pop(context);
