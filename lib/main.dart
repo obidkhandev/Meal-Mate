@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal_mate/cubit/country/country_cubit.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
 import 'service/firebase_options.dart';
@@ -7,16 +9,8 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    MultiProvider(providers: [
-      ChangeNotifierProvider(create:(_)=> TabViewModel()),
-      ChangeNotifierProvider(create:(_)=> AuthViewModel()),
-      ChangeNotifierProvider(create: (_)=>IngredientViewModel()),
-      ChangeNotifierProvider(create: (_)=>ProductsViewModel()),
-      ChangeNotifierProvider(create: (_)=>CategoryViewModel()),
-      ChangeNotifierProvider(create: (_)=>StepsViewModel()),
-      ChangeNotifierProvider(create: (_)=>NotificationViewModel()),
-    ],
-    child: const App(),
-    )
+    MultiBlocProvider(providers: [
+      BlocProvider(create: (context)=>CountryCubit()..fetchCurrencies(),)
+    ], child: App(),)
   );
 }
