@@ -1,4 +1,5 @@
 import 'package:meal_mate/screens/countries/countries_screen.dart';
+import 'package:meal_mate/screens/countries/local_auth/auth_1.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 
 
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               // initialRoute: RouteName.splash,
               // onGenerateRoute: AppRoute.generateRoute,
-              home: CountriesScreen()
+              home: LocalPasswordScreen()
             );
         },
         );
