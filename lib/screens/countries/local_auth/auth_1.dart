@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_mate/screens/countries/countries_screen.dart';
+import 'package:meal_mate/screens/countries/local_auth/auth_2.dart';
 import 'package:meal_mate/utils/style/app_text_style.dart';
 
 import 'cubit/auth_cubit.dart';
@@ -17,20 +18,16 @@ class LocalPasswordScreen extends StatelessWidget {
       create: (context) => _cubit,
       child: Scaffold(
         backgroundColor: Colors.blueGrey,
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-          title: const Text(
-            'Security screen',
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-          centerTitle: true,
-        ),
         body: SafeArea(
           child: BlocBuilder<LocalPasswordScreenCubit, LocalPasswordScreenState>(
             builder: (context, state) {
-              if (state is LocalPasswordScreenSuccess) {
-                return const CountriesScreen();
-              } else {
+              if (state is LocalPasswordScreenNavSecond) {
+                return LocalPasswordScreenSecond();
+              }
+              else if(state is LocalPasswordScreenSuccess){
+                return CountriesScreen();
+              }
+              else {
                 return buildPasswordScreen(context);
               }
             },
@@ -43,6 +40,10 @@ class LocalPasswordScreen extends StatelessWidget {
   Widget buildPasswordScreen(BuildContext context) {
     return Column(
       children: [
+        Text(
+          'Security screen',
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
         const SizedBox(height: 40),
         const Text('Enter your passcode', style: TextStyle(color: Colors.white, fontSize: 18)),
         const SizedBox(height: 20),

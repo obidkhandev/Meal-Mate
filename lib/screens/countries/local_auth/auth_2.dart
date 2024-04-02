@@ -8,24 +8,19 @@ import 'cubit/auth_cubit_state.dart';
 class LocalPasswordScreenSecond extends StatelessWidget {
   final LocalPasswordScreenSecondCubit _cubit = LocalPasswordScreenSecondCubit();
 
+  LocalPasswordScreenSecond({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _cubit,
       child: Scaffold(
         backgroundColor: Colors.blueGrey,
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-          title: Text(
-            'Security screen',
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-          centerTitle: true,
-        ),
+
         body: BlocBuilder<LocalPasswordScreenSecondCubit, LocalPasswordScreenSecondState>(
           builder: (context, state) {
             if (state is LocalPasswordScreenSecondSuccess) {
-              return const CountriesScreen();
+              return  CountriesScreen();
             } else {
               return buildPasswordScreen(context);
             }
@@ -38,6 +33,10 @@ class LocalPasswordScreenSecond extends StatelessWidget {
   Widget buildPasswordScreen(BuildContext context) {
     return Column(
       children: [
+        const Text(
+          'Security screen',
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
         const SizedBox(height: 40),
         const Text('Enter your check passcode', style: TextStyle(color: Colors.white, fontSize: 18)),
         const SizedBox(height: 20),

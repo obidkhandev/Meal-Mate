@@ -8,6 +8,8 @@ abstract class LocalPasswordScreenState {}
 class LocalPasswordScreenInitial extends LocalPasswordScreenState {}
 
 class LocalPasswordScreenSuccess extends LocalPasswordScreenState {}
+class LocalPasswordScreenNavSecond extends LocalPasswordScreenState {}
+
 
 class LocalPasswordScreenError extends LocalPasswordScreenState {
   final String errorMessage;
@@ -64,7 +66,7 @@ class LocalPasswordScreenSecondCubit extends Cubit<LocalPasswordScreenSecondStat
   }
 
   void validatePassword() async {
-    List<String> lastPass = StorageRepository.getStringList(key: "my_password");
+    List<String> lastPass = StorageRepository.getStringList(key: "my_pass");
 
     if (selectedButtons.length == 4 && lastPass.isNotEmpty) {
       if (listEquals(selectedButtons, lastPass)) {

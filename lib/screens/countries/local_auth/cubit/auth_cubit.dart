@@ -37,13 +37,15 @@ class LocalPasswordScreenCubit extends Cubit<LocalPasswordScreenState> {
   }
 
   void validatePassword() async {
-    List<String> lastPass = StorageRepository.getStringList(key: "my_password");
+    List<String> lastPass = StorageRepository.getStringList(key: "my_pass");
 
     if (lastPass.isEmpty) {
-      StorageRepository.setListString(key: "my_password", values: selectedButtons);
-      emit(LocalPasswordScreenSuccess());
+      StorageRepository.setListString(key: "my_pass", values: selectedButtons);
+      emit(LocalPasswordScreenNavSecond());
       return;
     }
+
+
 
     if (selectedButtons.length == 4 && lastPass.isNotEmpty) {
       if (listEquals(selectedButtons, lastPass)) {
