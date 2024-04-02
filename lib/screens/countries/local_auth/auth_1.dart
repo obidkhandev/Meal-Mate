@@ -1,133 +1,164 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meal_mate/data/local/storage_repository.dart';
+import 'package:meal_mate/screens/countries/countries_screen.dart';
 import 'package:meal_mate/screens/countries/local_auth/auth_2.dart';
 import 'package:meal_mate/utils/style/app_text_style.dart';
 
 class LocalPasswordScreen extends StatefulWidget {
+  const LocalPasswordScreen({super.key});
+
   @override
   _LocalPasswordScreenState createState() => _LocalPasswordScreenState();
 }
 
 class _LocalPasswordScreenState extends State<LocalPasswordScreen> {
-  List<bool> buttonTapped = List.generate(10, (index) => false);
   List<String> selectedButtons = [];
 
   void onButtonTap(int index) {
     setState(() {
       if (selectedButtons.length < 4) {
         selectedButtons.add(index.toString());
-        buttonTapped[index] = true;
       }
     });
   }
 
   void onButtonTapRemove() {
     setState(() {
-      if (selectedButtons.length <= 4) {
-        selectedButtons.remove(selectedButtons.last);
-        buttonTapped[selectedButtons.length] = false;
+      if (selectedButtons.isNotEmpty) {
+        selectedButtons.removeLast();
       }
     });
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _validatePassword() async {
+    List<String> lastPass = StorageRepository.getStringList(key: "my_password");
+    print(selectedButtons);
+    if(lastPass.isEmpty){
+      StorageRepository.setListString(key: "my_password", values: selectedButtons);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LocalPasswordScreenSecond()));
+      return;
+    }
+
+    if (selectedButtons.length == 4 && lastPass.isNotEmpty) {
+      if (lastPass.isNotEmpty && listEquals(selectedButtons, lastPass)) {
+        selectedButtons.clear();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CountriesScreen()));
+      } else {
+        _showSnackBar('Sizning parolingiz xato');
+        selectedButtons.clear();
+        setState(() {
+
+        });
+      }
+    } else {
+      selectedButtons.clear();
+      _showSnackBar('Siz Parolni to\'liq kiritmadingiz');
+      setState(() {
+
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: Text('Local Password Screen'),
+        backgroundColor: Colors.blueGrey,
+        title: const Text('Security screen',style: TextStyle(color: Colors.white,fontSize: 24),),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              4,
-              (index) => Icon(
-                selectedButtons.length > index ? Icons.lock : Icons.lock_open,
-                color:
-                    selectedButtons.length > index ? Colors.green : Colors.red,
+      body: SafeArea(
+
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            const Text('Enter your passcode',style: TextStyle(color: Colors.white,fontSize: 18),),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(
+                4,
+                    (index) => Icon(
+                  Icons.circle,
+                  color: selectedButtons.length > index ? Colors.green : Colors.grey,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 100),
-          SizedBox(
-            height: 300,
-            width: double.infinity,
-            child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              itemCount: 9,
-              // reverse: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 30,
-                mainAxisSpacing: 20,
-                mainAxisExtent: 80,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ElevatedButton(
-                  onPressed: () {
+            const  SizedBox(height: 80),
+            SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                itemCount: 9,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 20,
+                  mainAxisExtent: 80,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Items(text: '${index+1}', onTap: (){
                     onButtonTap(index);
-                  },
-                  child: Text(
-                    '${index + 1}',
-                    style: AppTextStyle.recolateBold
-                        .copyWith(color: Colors.white, fontSize: 24),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                  ),
-                );
-              },
+                  });
+                },
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  List<String> lastPass = StorageRepository.getStringList(key: "my_password");
-                  if (selectedButtons.length == 4)  {
-                    await StorageRepository.setListString(key: "my_password", values: selectedButtons);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => LocalPasswordScreenSecond()));
-                  } else {
-                    print("Siz hali to'liq kiritmadingiz");
-                  }
-                },
-                child: Icon(
-                  Icons.navigate_next,
-                  color: Colors.white,
-                  size: 60,
-                ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  onButtonTap(0);
-                },
-                child: Text(
-                  '0',
-                  style: AppTextStyle.recolateBold
-                      .copyWith(color: Colors.white, fontSize: 40),
-                ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  onButtonTapRemove();
-                },
-                child: Icon(
-                  Icons.backspace_outlined,
-                  color: Colors.white,
-                  size: 60,
-                ),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              ),
-            ],
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+              Items(
+                  fontSize: 24,
+                  text: "next", onTap: _validatePassword),
+               Items(text: '0', onTap: (){
+                 onButtonTap(0);
+               }),
+               Items(
+                   fontSize: 24,
+                   text: "del", onTap: onButtonTapRemove)
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Items extends StatelessWidget {
+  final String text;
+  final Function() onTap;
+  final double fontSize;
+  const Items({super.key, required this.text, required this.onTap, this.fontSize = 32});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 76,
+        width: 76,
+        padding: EdgeInsets.all(10),
+        // margin: Edg,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        child: Text(
+          text,
+          style: AppTextStyle.recolateBold.copyWith(color: Colors.white, fontSize: fontSize),
+        ),
       ),
     );
   }
