@@ -4,6 +4,7 @@ import 'package:meal_mate/screens/countries/countries_screen.dart';
 import 'package:meal_mate/screens/countries/local_auth/auth_2.dart';
 import 'package:meal_mate/utils/style/app_text_style.dart';
 
+
 import 'cubit/auth_cubit.dart';
 import 'cubit/auth_cubit_state.dart';
 
@@ -19,15 +20,14 @@ class LocalPasswordScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.blueGrey,
         body: SafeArea(
-          child: BlocBuilder<LocalPasswordScreenCubit, LocalPasswordScreenState>(
+          child:
+              BlocBuilder<LocalPasswordScreenCubit, LocalPasswordScreenState>(
             builder: (context, state) {
               if (state is LocalPasswordScreenNavSecond) {
                 return LocalPasswordScreenSecond();
-              }
-              else if(state is LocalPasswordScreenSuccess){
+              } else if (state is LocalPasswordScreenSuccess) {
                 return CountriesScreen();
-              }
-              else {
+              } else {
                 return buildPasswordScreen(context);
               }
             },
@@ -45,15 +45,21 @@ class LocalPasswordScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 24),
         ),
         const SizedBox(height: 40),
-        const Text('Enter your passcode', style: TextStyle(color: Colors.white, fontSize: 18)),
+        const Text('Enter your passcode',
+            style: TextStyle(color: Colors.white, fontSize: 18)),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             4,
-                (index) => Icon(
+            (index) => Icon(
               Icons.circle,
-              color: BlocProvider.of<LocalPasswordScreenCubit>(context).selectedButtons.length > index ? Colors.green : Colors.grey,
+              color: BlocProvider.of<LocalPasswordScreenCubit>(context)
+                          .selectedButtons
+                          .length >
+                      index
+                  ? Colors.green
+                  : Colors.grey,
             ),
           ),
         ),
@@ -71,30 +77,46 @@ class LocalPasswordScreen extends StatelessWidget {
               mainAxisExtent: 80,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return Items(text: '${index + 1}', onTap: () => BlocProvider.of<LocalPasswordScreenCubit>(context).onButtonTap(index));
+              return Items(
+                  text: '${index + 1}',
+                  onTap: () =>
+                      BlocProvider.of<LocalPasswordScreenCubit>(context)
+                          .onButtonTap(index));
             },
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Items(fontSize: 24, text: "next", onTap: () => BlocProvider.of<LocalPasswordScreenCubit>(context).validatePassword()),
-            Items(text: '0', onTap: () => BlocProvider.of<LocalPasswordScreenCubit>(context).onButtonTap(0)),
-            Items(fontSize: 24, text: "del", onTap: BlocProvider.of<LocalPasswordScreenCubit>(context).onButtonTapRemove),
+            Items(
+                fontSize: 24,
+                text: "next",
+                onTap: () => BlocProvider.of<LocalPasswordScreenCubit>(context)
+                    .validatePassword()),
+            Items(
+                text: '0',
+                onTap: () => BlocProvider.of<LocalPasswordScreenCubit>(context)
+                    .onButtonTap(0),
+            ),
+            Items(
+                fontSize: 24,
+                text: "del",
+                onTap: BlocProvider.of<LocalPasswordScreenCubit>(context)
+                    .onButtonTapRemove),
           ],
         ),
       ],
     );
   }
-
 }
-
 
 class Items extends StatelessWidget {
   final String text;
   final Function() onTap;
   final double fontSize;
-  const Items({super.key, required this.text, required this.onTap, this.fontSize = 32});
+
+  const Items(
+      {super.key, required this.text, required this.onTap, this.fontSize = 32});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +134,8 @@ class Items extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: AppTextStyle.recolateBold.copyWith(color: Colors.white, fontSize: fontSize),
+          style: AppTextStyle.recolateBold
+              .copyWith(color: Colors.white, fontSize: fontSize),
         ),
       ),
     );

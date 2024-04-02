@@ -13,10 +13,8 @@ class PasswordButtonTapped extends LocalPasswordScreenEvent {
 }
 
 class PasswordButtonRemove extends LocalPasswordScreenEvent {}
-
 class ValidatePassword extends LocalPasswordScreenEvent {}
 
-// Define the Cubit
 class LocalPasswordScreenCubit extends Cubit<LocalPasswordScreenState> {
   List<String> selectedButtons = [];
 

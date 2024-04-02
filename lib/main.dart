@@ -12,10 +12,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   StorageRepository();
   runApp(
-    MultiBlocProvider(providers: [
-      BlocProvider(create: (context)=>CountryCubit()..fetchCurrencies(),),
-      BlocProvider(create: (context)=>LocalPasswordScreenCubit(),),
-      BlocProvider(create: (context)=>LocalPasswordScreenSecondCubit(),),
-    ], child: const App(),)
+    App()
   );
 }

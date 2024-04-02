@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:meal_mate/cubit/model/country_model.dart';
 import 'package:meal_mate/cubit/model/network_reponse.dart';
+import 'package:meal_mate/cubit/model/transactions/transactions_model.dart';
+import 'package:meal_mate/screens/transactions/transactions_screen.dart';
 
 class ApiProvider {
   static Future<NetworkResponse> getCountries() async {
@@ -46,4 +48,24 @@ class ApiProvider {
       return NetworkResponse(errorText: error.toString());
     }
   }
+
+  static Future<NetworkResponse> getAllTransaction() async{
+    try {
+      http.Response response = await http
+          .get(Uri.parse("https://banking-api.free.mockoapp.net/transactions-incomes"));
+
+      if (response.statusCode == HttpStatus.ok) {
+        return NetworkResponse(
+          data: (jsonDecode(response.body) as List?)
+              ?.map((e) => TransactionModels.fromJson(e))
+              .toList() ??
+              [],
+        );
+      }
+      return NetworkResponse(errorText: "Noma'lum xatolik");
+    } catch (error) {
+      return NetworkResponse(errorText: error.toString());
+    }
+  }
+
 }
