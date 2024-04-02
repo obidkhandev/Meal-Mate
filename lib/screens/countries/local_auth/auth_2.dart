@@ -1,112 +1,87 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:meal_mate/data/local/storage_repository.dart';
-import 'package:meal_mate/screens/countries/countries_screen.dart';
-import 'package:meal_mate/screens/countries/local_auth/auth_1.dart';
-import 'package:meal_mate/utils/style/app_text_style.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LocalPasswordScreenSecond extends StatefulWidget {
-  const LocalPasswordScreenSecond({Key? key}) : super(key: key);
+import '../../../utils/tools/file_importer.dart';
+import '../countries_screen.dart';
+import 'auth_1.dart';
+import 'cubit/auth_cubit_state.dart';
 
-  @override
-  _LocalPasswordScreenSecondState createState() => _LocalPasswordScreenSecondState();
-}
-
-class _LocalPasswordScreenSecondState extends State<LocalPasswordScreenSecond> {
-  List<String> selectedButtons = [];
-
-  void onButtonTap(int index) {
-    setState(() {
-      if (selectedButtons.length < 4) {
-        selectedButtons.add(index.toString());
-      }
-    });
-  }
-
-  void onButtonTapRemove() {
-    setState(() {
-      if (selectedButtons.isNotEmpty) {
-        selectedButtons.removeLast();
-      }
-    });
-  }
+class LocalPasswordScreenSecond extends StatelessWidget {
+  final LocalPasswordScreenSecondCubit _cubit = LocalPasswordScreenSecondCubit();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      appBar: AppBar(
+    return BlocProvider(
+      create: (context) => _cubit,
+      child: Scaffold(
         backgroundColor: Colors.blueGrey,
-        title: Text('Security screen',style: TextStyle(color: Colors.white,fontSize: 24),),
-        centerTitle: true,
+        appBar: AppBar(
+          backgroundColor: Colors.blueGrey,
+          title: Text(
+            'Security screen',
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+          centerTitle: true,
+        ),
+        body: BlocBuilder<LocalPasswordScreenSecondCubit, LocalPasswordScreenSecondState>(
+          builder: (context, state) {
+            if (state is LocalPasswordScreenSecondSuccess) {
+              return const CountriesScreen();
+            } else {
+              return buildPasswordScreen(context);
+            }
+          },
+        ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 40),
-          const Text('Enter your check passcode',style: TextStyle(color: Colors.white,fontSize: 18),),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              4,
-                  (index) => Icon(
-                Icons.circle,
-                color: selectedButtons.length > index ? Colors.green : Colors.grey,
-              ),
+    );
+  }
+
+  Widget buildPasswordScreen(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 40),
+        const Text('Enter your check passcode', style: TextStyle(color: Colors.white, fontSize: 18)),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+            4,
+                (index) => Icon(
+              Icons.circle,
+              color: _cubit.selectedButtons.length > index ? Colors.green : Colors.grey,
             ),
           ),
-          const SizedBox(height: 80),
-          SizedBox(
-            height: 300,
-            width: double.infinity,
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              itemCount: 9,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 30,
-                mainAxisSpacing: 20,
-                mainAxisExtent: 80,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Items(text: '${index+1}', onTap: (){
-                  onButtonTap(index);
-                });
-              },
+        ),
+        const SizedBox(height: 80),
+        SizedBox(
+          height: 300,
+          width: double.infinity,
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            itemCount: 9,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 30,
+              mainAxisSpacing: 20,
+              mainAxisExtent: 80,
             ),
+            itemBuilder: (BuildContext context, int index) {
+              return Items(text: '${index + 1}', onTap: () => _cubit.onButtonTap(index));
+            },
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-             Items(
-               fontSize: 24,
-               text: 'next', onTap: () {
-               List<String> lastPass = StorageRepository.getStringList(key: "my_password");
-               if (lastPass.isNotEmpty && listEquals(selectedButtons, lastPass)) {
-                 selectedButtons.clear();
-                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CountriesScreen()));
-               } else {
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   const SnackBar(
-                     content: Text('Sizning parolingiz xato'),
-                   ),
-                 );
-                 selectedButtons.clear();
-                 setState(() {});
-               }
-             },),
-              Items(text: "0", onTap: (){
-                onButtonTap(0);
-              }),
-             Items(
-                 fontSize: 24,
-                 text: "del", onTap: (){
-               onButtonTapRemove();
-             })
-            ],
-          ),
-        ],
-      ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Items(
+              fontSize: 24,
+              text: 'next',
+              onTap: () => _cubit.validatePassword(),
+            ),
+            Items(text: '0', onTap: () => _cubit.onButtonTap(0)),
+            Items(fontSize: 24, text: "del", onTap: () => _cubit.onButtonTapRemove()),
+          ],
+        ),
+      ],
     );
   }
 }

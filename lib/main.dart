@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_mate/cubit/country/country_cubit.dart';
 import 'package:meal_mate/data/local/storage_repository.dart';
-import 'package:meal_mate/screens/countries/local_auth/auth_1.dart';
-import 'package:meal_mate/screens/countries/local_auth/auth_2.dart';
+import 'package:meal_mate/screens/countries/local_auth/cubit/auth_cubit.dart';
+import 'package:meal_mate/screens/countries/local_auth/cubit/auth_cubit_state.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
 import 'app/app.dart';
 import 'service/firebase_options.dart';
@@ -14,8 +14,8 @@ void main() async {
   runApp(
     MultiBlocProvider(providers: [
       BlocProvider(create: (context)=>CountryCubit()..fetchCurrencies(),),
-      // BlocProvider(create: (context)=>PasswordCubit(),),
-      // BlocProvider(create: (context)=>PasswordCubit2(),),
-    ], child: App(),)
+      BlocProvider(create: (context)=>LocalPasswordScreenCubit(),),
+      BlocProvider(create: (context)=>LocalPasswordScreenSecondCubit(),),
+    ], child: const App(),)
   );
 }
