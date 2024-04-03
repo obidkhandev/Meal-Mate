@@ -17,28 +17,23 @@ class TimerBlock extends StatelessWidget {
       create: (context) => TimerCubit(),
       child: Builder(
         builder: (context) {
-          // Access the TimerCubit instance
           final timerCubit = BlocProvider.of<TimerCubit>(context);
-          // Start the timer
-          timerCubit.startTimer(timeOfDay, tag);
 
+          timerCubit.startTimer(timeOfDay, tag);
           return BlocBuilder<TimerCubit, TimerState>(
             builder: (context, state) {
               if (state is TimerInitial) {
-                // Show loading indicator or initial state
                 return Scaffold(
                   body: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
               } else if (state is TimerRunning) {
-                // Show running timer UI
                 return TimerRunningWidget(state: state);
+
               }  else if (state is TimerStopState) {
-                // Show timer stopped UI
                 return TimerPausedWidget();
               }
-              // Handle other states if needed
               return Container();
             },
           );
@@ -69,13 +64,13 @@ class TimerRunningWidget extends StatelessWidget {
             const SizedBox(height: 50),
             Stack(
               children: [
-                const Center(
+                 Center(
                   child: SizedBox(
                     height: 200,
                     width: 200,
                     child: CircularProgressIndicator(
                       color: Colors.blueAccent,
-                      value: 1,
+                      value: state.duration.inSeconds.toDouble() / 60,
                       strokeWidth: 3,
                     ),
                   ),
@@ -95,6 +90,28 @@ class TimerRunningWidget extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 30),
+            Container(
+              height: 72,
+              width: 300,
+              decoration: BoxDecoration(
+                color: Color(0xffC5EFAB),
+                borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0,4),
+                  color: Colors.black.withOpacity(0.2),
+                ),
+              ]
+              ),
+              child: Column(
+                children: [
+                  Text("Tips or suggestions"),
+                  Text("Supporting line text lorem ipsum dolor sit amet, consectetur."),
+                ],
+              ),
+            ),
+            Icon(Icons.lock,size: 42,color: Colors.black,),
           ],
         ),
       ),

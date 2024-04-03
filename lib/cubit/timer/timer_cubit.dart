@@ -5,20 +5,17 @@ import 'package:meal_mate/cubit/timer/timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   late Timer _timer;
-  int _duration = 0;
 
   TimerCubit() : super(TimerInitial());
 
   void startTimer(TimeOfDay timeOfDay, String tag) {
     Duration _duration = Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
 
-    int durationInSeconds = _duration.inSeconds; // Convert to seconds
-    print(_duration);
-    print(timeOfDay);
+    int durationInSeconds = _duration.inSeconds;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (durationInSeconds > 0) {
         durationInSeconds -= 1; // Decrement by 1 second
-        _duration = Duration(seconds: durationInSeconds); // Update _duration
+        _duration = Duration(seconds: durationInSeconds);
         emit(TimerRunning(_duration, tag));
       } else {
         _timer.cancel();
