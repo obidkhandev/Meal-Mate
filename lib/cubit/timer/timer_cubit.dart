@@ -14,7 +14,7 @@ class TimerCubit extends Cubit<TimerState> {
     int durationInSeconds = _duration.inSeconds;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (durationInSeconds > 0) {
-        durationInSeconds -= 1; // Decrement by 1 second
+        durationInSeconds -= 1;
         _duration = Duration(seconds: durationInSeconds);
         emit(TimerRunning(_duration, tag));
       } else {
@@ -23,13 +23,6 @@ class TimerCubit extends Cubit<TimerState> {
       }
     });
   }
-
-
-
-  void stopTimer(TimeOfDay timerOfDay){
-      emit(TimerStopState());
-  }
-
 
 
   @override
