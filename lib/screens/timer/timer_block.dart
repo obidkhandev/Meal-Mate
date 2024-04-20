@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_mate/screens/timer/timer_home.dart';
-
+import 'package:wakelock/wakelock.dart';
 import '../../cubit/timer/timer_cubit.dart';
 import '../../cubit/timer/timer_state.dart';
 import '../../utils/tools/file_importer.dart';
@@ -18,19 +18,21 @@ class TimerBlock extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final timerCubit = BlocProvider.of<TimerCubit>(context);
-
           timerCubit.startTimer(timeOfDay, tag);
+          Wakelock.enable();
+
           return BlocBuilder<TimerCubit, TimerState>(
             builder: (context, state) {
               if (state is TimerInitial) {
-                return Scaffold(
+                return const Scaffold(
                   body: Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
               } else if (state is TimerRunning) {
-                return TimerRunningWidget(state: state);
+                return TimerRunningWidget(state: state,maxMin: state.duration.inSeconds.toDouble(),);
               } else if (state is TimerStopState) {
+                Wakelock.disable();
                 return TimerPausedWidget();
               }
               return Container();
@@ -44,8 +46,9 @@ class TimerBlock extends StatelessWidget {
 
 class TimerRunningWidget extends StatelessWidget {
   final TimerRunning state;
+  final double maxMin;
+  const TimerRunningWidget({super.key, required this.state, required this.maxMin});
 
-  const TimerRunningWidget({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +121,10 @@ class TimerRunningWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Color(0xffC5EFAB),
                       borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.white,width: 2),
                       boxShadow: [
                         BoxShadow(
-                          offset: Offset(0, 4),
+                          offset: Offset(3, 4),
                           color: Colors.black.withOpacity(0.2),
                         ),
                       ]),

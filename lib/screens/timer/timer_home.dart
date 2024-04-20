@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:meal_mate/screens/timer/timer_block.dart';
 import 'package:meal_mate/screens/timer/widget/my_dialog.dart';
 import 'package:meal_mate/utils/tools/file_importer.dart';
-
-import '../../cubit/timer/timer_cubit.dart';
 
 class TimerHomeScreen extends StatefulWidget {
   const TimerHomeScreen({super.key});
@@ -27,7 +23,7 @@ class _TimerHomeScreenState extends State<TimerHomeScreen> {
           children: [
             Stack(
               children: [
-                Center(
+                const Center(
                   child: SizedBox(
                     height: 200,
                     width: 200,
@@ -70,22 +66,18 @@ class _TimerHomeScreenState extends State<TimerHomeScreen> {
                     dropDown: SizedBox(
                       width: 150,
                       height: 60,
-                      child: DropdownButton<String>(
+                      child: DropdownButton(
                         value: _selected,
                         items: timerCategory.map((String value) {
-                          return DropdownMenuItem<String>(
+                          return DropdownMenuItem(
                             value: value,
                             child: Text(value),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
-                          if (newValue != null) {
                             setState(() {
-                              _selected = newValue;
-                              print(newValue);
-                              print(_selected);
+                              _selected = newValue!;
                             });
-                          }
                         },
                       ),
                     ),
@@ -93,7 +85,7 @@ class _TimerHomeScreenState extends State<TimerHomeScreen> {
                       timeOfDay = await showTimePicker(
                           context: context,
                           initialEntryMode: TimePickerEntryMode.input,
-                          initialTime: TimeOfDay(
+                          initialTime: const TimeOfDay(
                             hour: 0,
                             minute: 0,
                           ),
@@ -105,7 +97,6 @@ class _TimerHomeScreenState extends State<TimerHomeScreen> {
                               child: child!,
                             );
                           });
-                      print(timeOfDay);
                     },
                     onSaveButtonTap: () {
                       Navigator.pushReplacement(
@@ -117,10 +108,10 @@ class _TimerHomeScreenState extends State<TimerHomeScreen> {
                     },
                   );
                 },
-                child: Text("Start"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                 ),
+                child: Text("Start"),
               ),
             ),
           ],
